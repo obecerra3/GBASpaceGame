@@ -52,9 +52,7 @@ Instructions
 #include "myLib.h"
 #include "map.h"
 #include "battle.h"
-#include "unknownEvent.h"
-#include "merchant.h"
-#include "restSpot.h"
+#include "shop.h"
 #include "sound.h"
 
 #include "titleScreen.h"
@@ -82,13 +80,9 @@ void goToMap();
 void map();
 void goToBattle();
 void battle();
-void goToMerchant();
-void merchant();
-void goToUnknownEvent();
+void goToShop(int i);
+void shop();
 void unknownEvent();
-void goToRestSpot();
-void restSpot();
-
 void goToPause();
 void pause();
 void goToWin();
@@ -101,7 +95,7 @@ SOUND soundA;
 SOUND soundB;
 
 // States
-enum {START, INSTRUCTIONS, MAP, BATTLE, MERCHANT, UNKNOWN_EVENT, REST_SPOT, PAUSE, WIN, LOSE};
+enum {START, INSTRUCTIONS, MAP, BATTLE, SHOP, UNKNOWN_EVENT, REST_SPOT, PAUSE, WIN, LOSE};
 int state;
 int stateBeforePause;
 
@@ -109,7 +103,7 @@ unsigned short buttons;
 unsigned short oldButtons;
 
 OBJ_ATTR shadowOAM[128];
-int oamIndexMask[128];
+int oamIndexMask[98];
 
 int main() {
     initialize();
@@ -137,14 +131,8 @@ int main() {
             case BATTLE:
                 battle();
                 break;
-            case MERCHANT:
-                merchant();
-                break;
-            case UNKNOWN_EVENT:
-                unknownEvent();
-                break;
-            case REST_SPOT:
-                restSpot();
+            case SHOP:
+                shop();
                 break;
             case PAUSE:
                 pause();
@@ -215,6 +203,7 @@ void instructions() {
 }
 
 void goToMap() {
+    hideSprites();
     clearAllOAM();
     initMapOAM();
     playSoundA(punch, PUNCHLEN, PUNCHFREQ, 0);
@@ -241,15 +230,11 @@ void map() {
             break;
         case UNKNOWN_EVENT:
             stateToGo = 0;
-            goToUnknownEvent();
+            unknownEvent();
             break;
-        case REST_SPOT:
+        case SHOP:
             stateToGo = 0;
-            goToRestSpot();
-            break;
-        case MERCHANT:
-            stateToGo = 0;
-            goToMerchant();
+            goToShop(1);
             break;
     }
 }
@@ -278,72 +263,45 @@ void battle() {
         bossBattle = 0;
         goToWin();
     } else if (gameWon) {
+        player.coins += (rand() % 20) + 30;
         hideSprites();
         goToMap();
     }
 }
 
-void goToMerchant() {
+void goToShop(int init) {
     clearAllOAM();
+    hideSprites();
+    initShop(init);
     DMANow(3, eventScreenPal, PALETTE, eventScreenPalLen / 2);
     DMANow(3, eventScreenTiles, CHARBLOCK, eventScreenTilesLen / 2);
     DMANow(3, eventScreenMap, &SCREENBLOCK[31], eventScreenMapLen / 2);
-    state = MERCHANT;
+    state = SHOP;
 }
 
-void merchant() {
-    updateMerchant();
+void shop() {
+    updateShop();
     waitForVBlank();
-    drawMerchant();
+    drawShop();
 
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
-        stateBeforePause = MERCHANT;
+        stateBeforePause = SHOP;
         goToPause();
     }
-    //logic for done shopping
-}
 
-void goToUnknownEvent() {
-    clearAllOAM();
-    DMANow(3, eventScreenPal, PALETTE, eventScreenPalLen / 2);
-    DMANow(3, eventScreenTiles, CHARBLOCK, eventScreenTilesLen / 2);
-    DMANow(3, eventScreenMap, &SCREENBLOCK[31], eventScreenMapLen / 2);
-    state = UNKNOWN_EVENT;
+    if (leaveShop == 1) {
+        goToMap();
+    }
 }
 
 void unknownEvent() {
-    updateUnknownEvent();
-    waitForVBlank();
-    drawUnknownEvent();
-
-    // State transitions
-    if (BUTTON_PRESSED(BUTTON_START)) {
-        stateBeforePause = UNKNOWN_EVENT;
-        goToPause();
+    //
+    if (rand() % 10 < 6) {
+        goToBattle();
+    } else {
+        goToShop(1);
     }
-    //logic for event over
-}
-
-void goToRestSpot() {
-    clearAllOAM();
-    DMANow(3, eventScreenPal, PALETTE, eventScreenPalLen / 2);
-    DMANow(3, eventScreenTiles, CHARBLOCK, eventScreenTilesLen / 2);
-    DMANow(3, eventScreenMap, &SCREENBLOCK[31], eventScreenMapLen / 2);
-    state = REST_SPOT;
-}
-
-void restSpot() {
-    updateRestSpot();
-    waitForVBlank();
-    drawRestSpot();
-
-    // State transitions
-    if (BUTTON_PRESSED(BUTTON_START)) {
-        stateBeforePause = REST_SPOT;
-        goToPause();
-    }
-    //logic for rest done
 }
 
 
@@ -369,14 +327,8 @@ void pause() {
                 goToBattle();
                 drawBattleAfterPause();
                 break;
-            case UNKNOWN_EVENT:
-                goToUnknownEvent();
-                break;
-            case REST_SPOT:
-                goToRestSpot();
-                break;
-            case MERCHANT:
-                goToMerchant();
+            case SHOP:
+                goToShop(0);
                 break;
         }
     else if (BUTTON_PRESSED(BUTTON_SELECT))

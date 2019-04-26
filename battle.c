@@ -28,23 +28,24 @@ Enemy enemy;
 char buffer[200];
 
 //card stuff
-int CARD_WIDTH = 39;
-int CARD_HEIGHT = 51;
-int masterDeck[10][11] = {{16, 0, 1, 7, 0, 0, 0, 0, 0, 0, 0},
-                          {0, 0, 1, 0, 5, 0, 0, 0, 0, 0, 0},
-                          {24, 0, 2, 19, 0, 0, 0, 0, 0, 0, 0},
-                          {8, 0, 2, 0, 15, 0, 0, 0, 0, 0, 0},
-                          {16, 8, 1, 0, 0, 1, 0, 0, 0, 0, 0},
-                          {8, 8, 1, 0, 0, 0, 1, 0, 0, 0, 0},
-                          {0, 8, 1, 0, 0, 0, 0, 1, 0, 0, 0},
-                          {24, 16, 1, 0, 0, 0, 0, 0, 1, 0, 0},
-                          {24, 8, 0, 0, 0, 0, 0, 0, 0, 1, 0},
-                          {24, 24, 0, 0, 0, 0, 0, 0, 0, 0, 1}};
+#define CARD_WIDTH 39
+#define CARD_HEIGHT 51
+
+int masterDeck[10][12] = {{16, 0, 1, 7, 0, 0, 0, 0, 0, 0, 0, 10},
+                          {0, 0, 1, 0, 5, 0, 0, 0, 0, 0, 0, 8},
+                          {24, 0, 2, 19, 0, 0, 0, 0, 0, 0, 0, 33},
+                          {8, 0, 2, 0, 15, 0, 0, 0, 0, 0, 0, 30},
+                          {16, 8, 1, 0, 0, 1, 0, 0, 0, 0, 0, 21},
+                          {8, 8, 1, 0, 0, 0, 1, 0, 0, 0, 0, 18},
+                          {0, 8, 1, 0, 0, 0, 0, 1, 0, 0, 0, 25},
+                          {24, 16, 1, 0, 0, 0, 0, 0, 1, 0, 0, 31},
+                          {24, 8, 0, 0, 0, 0, 0, 0, 0, 1, 0, 58},
+                          {24, 24, 0, 0, 0, 0, 0, 0, 0, 0, 1, 65}};
 
 enum {FIRE1, BLOCK1, FIRE2, BLOCK2, BOOST_FIRE, BREAK_FIRE, BOOST_BLOCK, BREAK_BLOCK,
       REDO, ENERGY};
 enum {SHEET_COL, SHEET_ROW, AP_COST, DMG, BLOCK, DMG_UP,
-      DMG_DOWN, BLOCK_UP, BLOCK_DOWN, REDO_ON, ENERGY_ON};
+      DMG_DOWN, BLOCK_UP, BLOCK_DOWN, REDO_ON, ENERGY_ON, COST};
 
 int playerHealthOAM[16];
 int playerBlockOAM[5];
@@ -55,7 +56,6 @@ int actionPointsOAM[5];
 
 void initBattle() {
     hideSprites();
-    player.health = 80;
     Enemy newEnemy = {.health = 5};
     player.actionPoints = 3;
     for (int i = 0; i < player.deckLength; i++) {
@@ -253,6 +253,7 @@ void drawHand() {
     for (int i = 0; i < 4; i++) {
         oamIndex = deckOAM[i];
         if (player.deck[currentDeck[i]].used == 0) {
+            //draw player hand
             shadowOAM[oamIndex].attr0 = (currentCardsRow & ROWMASK) | ATTR0_REGULAR | ATTR0_SQUARE | ATTR0_4BPP; //i+1
             shadowOAM[oamIndex].attr1 = (currentCardsCols[i] & COLMASK) | ATTR1_LARGE;
             shadowOAM[oamIndex].attr2 = ATTR2_TILEID(masterDeck[player.deck[currentDeck[i]].index][SHEET_ROW], masterDeck[player.deck[currentDeck[i]].index][SHEET_COL]);
@@ -263,11 +264,13 @@ void drawHand() {
 
     for (int i = 0; i < 5; i++) {
         oamIndex = actionPointsOAM[i];
+        //hide action points
         shadowOAM[oamIndex].attr0 = ATTR0_HIDE; //5+i
     }
 
     for (int i = 0; i < player.actionPoints; i++) {
         oamIndex = actionPointsOAM[i];
+        //draw action points
         shadowOAM[oamIndex].attr0 = (87 & ROWMASK) | ATTR0_REGULAR | ATTR0_TALL | ATTR0_4BPP;
         shadowOAM[oamIndex].attr1 = ((110 + (i*7)) & COLMASK) | ATTR1_TINY;
         shadowOAM[oamIndex].attr2 = ATTR2_TILEID(20, 4);
@@ -324,7 +327,7 @@ void checkSelector() {
 void initGame() {
     bossBattle = 0;
     Box newSelector = {.width = 16, .height = 16, .sheetRow = 16, .sheetCol = 0, .screenRow = 65, .screenCol = 105, .dRow = 3, .dCol = 3};
-    Player newPlayer = {.health = 80,  .actionPoints = 3, .deckLength = 8, .selector = newSelector, .selectorEnabled = 0, .shipCol = -11, .shipRow = -20};
+    Player newPlayer = {.health = 80, .coins = rand() % 40, .actionPoints = 3, .deckLength = 8, .selector = newSelector, .selectorEnabled = 0, .shipCol = -11, .shipRow = -20};
     player = newPlayer;
     int initialCards[6] = {FIRE1, BLOCK1, FIRE2, BLOCK2, REDO, ENERGY};
     for (int i = 0; i < 6; i++) {

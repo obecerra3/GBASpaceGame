@@ -5,11 +5,11 @@
 //
 //	eventScreen, 256x256@4, 
 //	+ palette 256 entries, not compressed
-//	+ 1 tiles (t|f|p reduced) not compressed
+//	+ 38 tiles (t|f|p reduced) not compressed
 //	+ regular map (in SBBs), not compressed, 32x32 
-//	Total size: 512 + 32 + 2048 = 2592
+//	Total size: 512 + 1216 + 2048 = 3776
 //
-//	Time-stamp: 2019-04-04, 13:49:11
+//	Time-stamp: 2019-04-25, 22:47:08
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -18,8 +18,8 @@
 #ifndef GRIT_EVENTSCREEN_H
 #define GRIT_EVENTSCREEN_H
 
-#define eventScreenTilesLen 32
-extern const unsigned short eventScreenTiles[16];
+#define eventScreenTilesLen 1216
+extern const unsigned short eventScreenTiles[608];
 
 #define eventScreenMapLen 2048
 extern const unsigned short eventScreenMap[1024];

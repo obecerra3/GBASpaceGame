@@ -1337,6 +1337,7 @@ typedef struct {
 
 typedef struct {
     int health;
+    int coins;
     int block;
     int actionPoints;
     int deckLength;
@@ -1372,9 +1373,9 @@ typedef struct {
     int hide;
     int oamIndex;
 } ANISPRITE;
-# 132 "myLib.h"
+# 133 "myLib.h"
 extern unsigned short *videoBuffer;
-# 153 "myLib.h"
+# 154 "myLib.h"
 typedef struct {
  u16 tileimg[8192];
 } charblock;
@@ -1418,12 +1419,12 @@ typedef struct {
 
 extern OBJ_ATTR shadowOAM[];
 extern int oamIndexMask[];
-# 226 "myLib.h"
+# 227 "myLib.h"
 void hideSprites();
-# 250 "myLib.h"
+# 251 "myLib.h"
 extern unsigned short oldButtons;
 extern unsigned short buttons;
-# 261 "myLib.h"
+# 262 "myLib.h"
 typedef volatile struct {
     volatile const void *src;
     volatile void *dst;
@@ -1432,9 +1433,9 @@ typedef volatile struct {
 
 
 extern DMA *dma;
-# 301 "myLib.h"
+# 302 "myLib.h"
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
-# 385 "myLib.h"
+# 386 "myLib.h"
 typedef struct{
     const unsigned char* data;
     int length;
@@ -1459,7 +1460,7 @@ void freeOAMIndex(int i);
 
 int getOAMIndex();
 
-void printNum(int row, int col, int num);
+int printNum(int row, int col, int num, int rowOffset);
 # 5 "battle.c" 2
 # 1 "battle.h" 1
 
@@ -1477,7 +1478,7 @@ void drawBlockMeter();
 
 
 extern Player player;
-
+extern int masterDeck[10][12];
 extern int gameOver;
 extern int gameWon;
 extern int bossBattle;
@@ -1522,23 +1523,24 @@ Enemy enemy;
 char buffer[200];
 
 
-int CARD_WIDTH = 39;
-int CARD_HEIGHT = 51;
-int masterDeck[10][11] = {{16, 0, 1, 7, 0, 0, 0, 0, 0, 0, 0},
-                          {0, 0, 1, 0, 5, 0, 0, 0, 0, 0, 0},
-                          {24, 0, 2, 19, 0, 0, 0, 0, 0, 0, 0},
-                          {8, 0, 2, 0, 15, 0, 0, 0, 0, 0, 0},
-                          {16, 8, 1, 0, 0, 1, 0, 0, 0, 0, 0},
-                          {8, 8, 1, 0, 0, 0, 1, 0, 0, 0, 0},
-                          {0, 8, 1, 0, 0, 0, 0, 1, 0, 0, 0},
-                          {24, 16, 1, 0, 0, 0, 0, 0, 1, 0, 0},
-                          {24, 8, 0, 0, 0, 0, 0, 0, 0, 1, 0},
-                          {24, 24, 0, 0, 0, 0, 0, 0, 0, 0, 1}};
+
+
+
+int masterDeck[10][12] = {{16, 0, 1, 7, 0, 0, 0, 0, 0, 0, 0, 10},
+                          {0, 0, 1, 0, 5, 0, 0, 0, 0, 0, 0, 8},
+                          {24, 0, 2, 19, 0, 0, 0, 0, 0, 0, 0, 33},
+                          {8, 0, 2, 0, 15, 0, 0, 0, 0, 0, 0, 30},
+                          {16, 8, 1, 0, 0, 1, 0, 0, 0, 0, 0, 21},
+                          {8, 8, 1, 0, 0, 0, 1, 0, 0, 0, 0, 18},
+                          {0, 8, 1, 0, 0, 0, 0, 1, 0, 0, 0, 25},
+                          {24, 16, 1, 0, 0, 0, 0, 0, 1, 0, 0, 31},
+                          {24, 8, 0, 0, 0, 0, 0, 0, 0, 1, 0, 58},
+                          {24, 24, 0, 0, 0, 0, 0, 0, 0, 0, 1, 65}};
 
 enum {FIRE1, BLOCK1, FIRE2, BLOCK2, BOOST_FIRE, BREAK_FIRE, BOOST_BLOCK, BREAK_BLOCK,
       REDO, ENERGY};
 enum {SHEET_COL, SHEET_ROW, AP_COST, DMG, BLOCK, DMG_UP,
-      DMG_DOWN, BLOCK_UP, BLOCK_DOWN, REDO_ON, ENERGY_ON};
+      DMG_DOWN, BLOCK_UP, BLOCK_DOWN, REDO_ON, ENERGY_ON, COST};
 
 int playerHealthOAM[16];
 int playerBlockOAM[5];
@@ -1549,7 +1551,6 @@ int actionPointsOAM[5];
 
 void initBattle() {
     hideSprites();
-    player.health = 80;
     Enemy newEnemy = {.health = 5};
     player.actionPoints = 3;
     for (int i = 0; i < player.deckLength; i++) {
@@ -1747,6 +1748,7 @@ void drawHand() {
     for (int i = 0; i < 4; i++) {
         oamIndex = deckOAM[i];
         if (player.deck[currentDeck[i]].used == 0) {
+
             shadowOAM[oamIndex].attr0 = (currentCardsRow & 0xFF) | (0<<8) | (0<<14) | (0<<13);
             shadowOAM[oamIndex].attr1 = (currentCardsCols[i] & 0x1FF) | (3<<14);
             shadowOAM[oamIndex].attr2 = ((masterDeck[player.deck[currentDeck[i]].index][SHEET_ROW])*32+(masterDeck[player.deck[currentDeck[i]].index][SHEET_COL]));
@@ -1757,11 +1759,13 @@ void drawHand() {
 
     for (int i = 0; i < 5; i++) {
         oamIndex = actionPointsOAM[i];
+
         shadowOAM[oamIndex].attr0 = (2<<8);
     }
 
     for (int i = 0; i < player.actionPoints; i++) {
         oamIndex = actionPointsOAM[i];
+
         shadowOAM[oamIndex].attr0 = (87 & 0xFF) | (0<<8) | (2<<14) | (0<<13);
         shadowOAM[oamIndex].attr1 = ((110 + (i*7)) & 0x1FF) | (0<<14);
         shadowOAM[oamIndex].attr2 = ((20)*32+(4));
@@ -1779,7 +1783,7 @@ void checkSelector() {
     int currentDeckIndex = -1;
     for (int i = 0; i < 4; i++) {
         if (collision(player.selector.screenRow, player.selector.screenCol, player.selector.height, player.selector.width,
-            currentCardsRow + 4, currentCardsCols[i] + 12, CARD_HEIGHT, CARD_WIDTH)) {
+            currentCardsRow + 4, currentCardsCols[i] + 12, 51, 39)) {
             currentDeckIndex = i;
         }
     }
@@ -1818,7 +1822,7 @@ void checkSelector() {
 void initGame() {
     bossBattle = 0;
     Box newSelector = {.width = 16, .height = 16, .sheetRow = 16, .sheetCol = 0, .screenRow = 65, .screenCol = 105, .dRow = 3, .dCol = 3};
-    Player newPlayer = {.health = 80, .actionPoints = 3, .deckLength = 8, .selector = newSelector, .selectorEnabled = 0, .shipCol = -11, .shipRow = -20};
+    Player newPlayer = {.health = 80, .coins = rand() % 40, .actionPoints = 3, .deckLength = 8, .selector = newSelector, .selectorEnabled = 0, .shipCol = -11, .shipRow = -20};
     player = newPlayer;
     int initialCards[6] = {FIRE1, BLOCK1, FIRE2, BLOCK2, REDO, ENERGY};
     for (int i = 0; i < 6; i++) {

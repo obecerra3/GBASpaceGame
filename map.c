@@ -41,7 +41,11 @@ void initMap() {
             colOffset = rand() % 40;
             mapNode.worldRow = MAP_ROW + (i*64) + rowOffset; //64 magic number for 4 * mapNodeSize
             mapNode.worldCol = MAP_COL + (j*64) + colOffset;
-            mapNode.type = rand() % 4;
+            if (rand() % 4 < 2) {
+                mapNode.type = rand() % 2;
+            } else {
+                mapNode.type = (rand() % 2) + 2;
+            }
             mapNode.sheetRow = 16;
             mapNode.sheetCol = 2+(2*mapNode.type);
             mapNode.visited = 0;
@@ -138,7 +142,10 @@ void checkMapSelector() {
             player.shipRow = node.worldRow;
             player.shipCol = node.worldCol;
             checkMap();
-            stateToGo = (node.type != 0) ? 0 : node.type + 3;
+            stateToGo = node.type + 3; //(node.type != 0) ? 0 : node.type + 3;
+            if (node.type == 3) {
+                heal();
+            }
             map[i] = node;
         }
     }
@@ -149,6 +156,15 @@ void checkMapSelector() {
             player.shipCol = bossNode.worldCol;
             bossBattle = 1;
             stateToGo = 3;
+    }
+}
+
+void heal() {
+    int increment = 20 + (rand() % 15);
+    if (player.health + increment > 100) {
+        player.health = 100;
+    } else {
+        player.health += increment;
     }
 }
 

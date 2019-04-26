@@ -46,6 +46,7 @@ typedef struct {
 
 typedef struct {
     int health;
+    int coins;
     int block;
     int actionPoints;
     int deckLength;
@@ -81,9 +82,9 @@ typedef struct {
     int hide;
     int oamIndex;
 } ANISPRITE;
-# 132 "myLib.h"
+# 133 "myLib.h"
 extern unsigned short *videoBuffer;
-# 153 "myLib.h"
+# 154 "myLib.h"
 typedef struct {
  u16 tileimg[8192];
 } charblock;
@@ -127,12 +128,12 @@ typedef struct {
 
 extern OBJ_ATTR shadowOAM[];
 extern int oamIndexMask[];
-# 226 "myLib.h"
+# 227 "myLib.h"
 void hideSprites();
-# 250 "myLib.h"
+# 251 "myLib.h"
 extern unsigned short oldButtons;
 extern unsigned short buttons;
-# 261 "myLib.h"
+# 262 "myLib.h"
 typedef volatile struct {
     volatile const void *src;
     volatile void *dst;
@@ -141,9 +142,9 @@ typedef volatile struct {
 
 
 extern DMA *dma;
-# 301 "myLib.h"
+# 302 "myLib.h"
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
-# 385 "myLib.h"
+# 386 "myLib.h"
 typedef struct{
     const unsigned char* data;
     int length;
@@ -168,8 +169,11 @@ void freeOAMIndex(int i);
 
 int getOAMIndex();
 
-void printNum(int row, int col, int num);
+int printNum(int row, int col, int num, int rowOffset);
 # 2 "myLib.c" 2
+
+static int oamNumIndex[10] = {127, 124, 121, 118, 115, 112, 109, 106, 103, 101};
+static int currentNumIndex = 0;
 
 
 unsigned short *videoBuffer = (unsigned short *)0x6000000;
@@ -321,14 +325,14 @@ int spriteCollision(ANISPRITE sprite1, ANISPRITE sprite2) {
 
 
 void hideSprites() {
-    for (int i = 0; i < 125; i++) {
+    for (int i = 0; i < 128; i++) {
         shadowOAM[i].attr0 = (2<<8);
     }
 }
 
 
 int getOAMIndex() {
-    for (int i = 0; i < 125; i++) {
+    for (int i = 0; i < 98; i++) {
         if (oamIndexMask[i] == 0) {
             oamIndexMask[i] = 1;
             return i;
@@ -342,12 +346,12 @@ void freeOAMIndex(int i) {
 }
 
 void clearAllOAM() {
-    for (int i = 0; i < 128; i++) {
+    for (int i = 0; i < 122; i++) {
         oamIndexMask[i] = 0;
     }
 }
 
-void printNum(int row, int col, int num) {
+int printNum(int row, int col, int num, int rowOffset) {
     int nums[3] = {-1,-1,-1};
     int i = 0;
     while (num > 0) {
@@ -355,20 +359,25 @@ void printNum(int row, int col, int num) {
         num = num / 10;
         i++;
     }
+
+    int oamIndex = oamNumIndex[currentNumIndex];
     if (nums[2] != -1) {
-        shadowOAM[125].attr0 = (row & 0xFF) | (0<<8) | (2<<14) | (0<<13);
-        shadowOAM[125].attr1 = (col & 0x1FF) | (0<<14);
-        shadowOAM[125].attr2 = ((24)*32+(nums[2]));
+        shadowOAM[oamIndex - 2].attr0 = (row & 0xFF) | (0<<8) | (0<<14) | (0<<13);
+        shadowOAM[oamIndex - 2].attr1 = (col & 0x1FF) | (0<<14);
+        shadowOAM[oamIndex - 2].attr2 = ((24+rowOffset)*32+(nums[2]));
     }
     if (nums[1] != -1) {
-        shadowOAM[126].attr0 = (row & 0xFF) | (0<<8) | (2<<14) | (0<<13);
-        shadowOAM[126].attr1 = ((col+5) & 0x1FF) | (0<<14);
-        shadowOAM[126].attr2 = ((24)*32+(nums[1]));
+        shadowOAM[oamIndex - 1].attr0 = (row & 0xFF) | (0<<8) | (0<<14) | (0<<13);
+        shadowOAM[oamIndex - 1].attr1 = ((col+5) & 0x1FF) | (0<<14);
+        shadowOAM[oamIndex - 1].attr2 = ((24+rowOffset)*32+(nums[1]));
     }
 
     if (nums[0] != -1) {
-        shadowOAM[127].attr0 = (row & 0xFF) | (0<<8) | (2<<14) | (0<<13);
-        shadowOAM[127].attr1 = ((col+10) & 0x1FF) | (0<<14);
-        shadowOAM[127].attr2 = ((24)*32+(nums[0]));
+        shadowOAM[oamIndex].attr0 = (row & 0xFF) | (0<<8) | (0<<14) | (0<<13);
+        shadowOAM[oamIndex].attr1 = ((col+10) & 0x1FF) | (0<<14);
+        shadowOAM[oamIndex].attr2 = ((24+rowOffset)*32+(nums[0]));
     }
+    currentNumIndex = (currentNumIndex + 1) % 10;
+
+    return oamIndex;
 }

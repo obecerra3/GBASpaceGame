@@ -1,5 +1,8 @@
 #include "myLib.h"
 
+static int oamNumIndex[10] = {127, 124, 121, 118, 115, 112, 109, 106, 103, 101};
+static int currentNumIndex = 0;
+
 // The start of the video memory
 unsigned short *videoBuffer = (unsigned short *)0x6000000;
 
@@ -150,14 +153,14 @@ int spriteCollision(ANISPRITE sprite1, ANISPRITE sprite2) {
 
 // Hides all sprites in the shadowOAM
 void hideSprites() {
-    for (int i = 0; i < 125; i++) {
+    for (int i = 0; i < 128; i++) {
         shadowOAM[i].attr0 = ATTR0_HIDE;
     }
 }
 
 //gets a free OAMIndex
 int getOAMIndex() {
-    for (int i = 0; i < 125; i++) {
+    for (int i = 0; i < 98; i++) {
         if (oamIndexMask[i] == 0) {
             oamIndexMask[i] = 1;
             return i;
@@ -171,12 +174,12 @@ void freeOAMIndex(int i) {
 }
 
 void clearAllOAM() {
-    for (int i = 0; i < 128; i++) {
+    for (int i = 0; i < 122; i++) {
         oamIndexMask[i] = 0;
     }
 }
 
-void printNum(int row, int col, int num) {
+int printNum(int row, int col, int num, int rowOffset) {
     int nums[3] = {-1,-1,-1};
     int i = 0;
     while (num > 0) {
@@ -184,27 +187,27 @@ void printNum(int row, int col, int num) {
         num = num / 10;
         i++;
     }
+
+    int oamIndex = oamNumIndex[currentNumIndex];
     if (nums[2] != -1) {
-        shadowOAM[125].attr0 = (row & ROWMASK) | ATTR0_REGULAR | ATTR0_TALL | ATTR0_4BPP;
-        shadowOAM[125].attr1 = (col & COLMASK) | ATTR1_TINY;
-        shadowOAM[125].attr2 = ATTR2_TILEID(24, nums[2]);
+        shadowOAM[oamIndex - 2].attr0 = (row & ROWMASK) | ATTR0_REGULAR | ATTR0_SQUARE | ATTR0_4BPP;
+        shadowOAM[oamIndex - 2].attr1 = (col & COLMASK) | ATTR1_TINY;
+        shadowOAM[oamIndex - 2].attr2 = ATTR2_TILEID(24+rowOffset, nums[2]);
     }
     if (nums[1] != -1) {
-        shadowOAM[126].attr0 = (row & ROWMASK) | ATTR0_REGULAR | ATTR0_TALL | ATTR0_4BPP;
-        shadowOAM[126].attr1 = ((col+5) & COLMASK) | ATTR1_TINY;
-        shadowOAM[126].attr2 = ATTR2_TILEID(24, nums[1]);
+        shadowOAM[oamIndex - 1].attr0 = (row & ROWMASK) | ATTR0_REGULAR | ATTR0_SQUARE | ATTR0_4BPP;
+        shadowOAM[oamIndex - 1].attr1 = ((col+5) & COLMASK) | ATTR1_TINY;
+        shadowOAM[oamIndex - 1].attr2 = ATTR2_TILEID(24+rowOffset, nums[1]);
     }
 
     if (nums[0] != -1) {
-        shadowOAM[127].attr0 = (row & ROWMASK) | ATTR0_REGULAR | ATTR0_TALL | ATTR0_4BPP;
-        shadowOAM[127].attr1 = ((col+10) & COLMASK) | ATTR1_TINY;
-        shadowOAM[127].attr2 = ATTR2_TILEID(24, nums[0]);
+        shadowOAM[oamIndex].attr0 = (row & ROWMASK) | ATTR0_REGULAR | ATTR0_SQUARE | ATTR0_4BPP;
+        shadowOAM[oamIndex].attr1 = ((col+10) & COLMASK) | ATTR1_TINY;
+        shadowOAM[oamIndex].attr2 = ATTR2_TILEID(24+rowOffset, nums[0]);
     }
+    currentNumIndex = (currentNumIndex + 1) % 10;
+
+    return oamIndex;
 }
-
-
-
-
-
 
 

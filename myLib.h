@@ -41,6 +41,7 @@ typedef struct {
 
 typedef struct {
     int health;
+    int coins;
     int block;
     int actionPoints;
     int deckLength;
@@ -406,6 +407,6 @@ void freeOAMIndex(int i);
 
 int getOAMIndex();
 
-void printNum(int row, int col, int num);
+int printNum(int row, int col, int num, int rowOffset);
 
 #endif

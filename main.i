@@ -47,6 +47,7 @@ typedef struct {
 
 typedef struct {
     int health;
+    int coins;
     int block;
     int actionPoints;
     int deckLength;
@@ -82,9 +83,9 @@ typedef struct {
     int hide;
     int oamIndex;
 } ANISPRITE;
-# 132 "myLib.h"
+# 133 "myLib.h"
 extern unsigned short *videoBuffer;
-# 153 "myLib.h"
+# 154 "myLib.h"
 typedef struct {
  u16 tileimg[8192];
 } charblock;
@@ -128,12 +129,12 @@ typedef struct {
 
 extern OBJ_ATTR shadowOAM[];
 extern int oamIndexMask[];
-# 226 "myLib.h"
+# 227 "myLib.h"
 void hideSprites();
-# 250 "myLib.h"
+# 251 "myLib.h"
 extern unsigned short oldButtons;
 extern unsigned short buttons;
-# 261 "myLib.h"
+# 262 "myLib.h"
 typedef volatile struct {
     volatile const void *src;
     volatile void *dst;
@@ -142,9 +143,9 @@ typedef volatile struct {
 
 
 extern DMA *dma;
-# 301 "myLib.h"
+# 302 "myLib.h"
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
-# 385 "myLib.h"
+# 386 "myLib.h"
 typedef struct{
     const unsigned char* data;
     int length;
@@ -169,7 +170,7 @@ void freeOAMIndex(int i);
 
 int getOAMIndex();
 
-void printNum(int row, int col, int num);
+int printNum(int row, int col, int num, int rowOffset);
 # 53 "main.c" 2
 # 1 "map.h" 1
 
@@ -181,7 +182,7 @@ int distanceBetween(int row1, int col1, int row2, int col2);
 int getShipFrame();
 void checkMapSelector();
 void initMapOAM();
-
+void heal();
 
 extern int stateToGo;
 # 54 "main.c" 2
@@ -201,29 +202,21 @@ void drawBlockMeter();
 
 
 extern Player player;
-
+extern int masterDeck[10][12];
 extern int gameOver;
 extern int gameWon;
 extern int bossBattle;
 # 55 "main.c" 2
-# 1 "unknownEvent.h" 1
+# 1 "shop.h" 1
 
-void initUnknownEvent();
-void updateUnknownEvent();
-void drawUnknownEvent();
+void initShop();
+void updateShop();
+void drawShop();
+void checkShopSelector();
+void drawShopCards();
+
+extern int leaveShop;
 # 56 "main.c" 2
-# 1 "merchant.h" 1
-
-void initMerchant();
-void updateMerchant();
-void drawMerchant();
-# 57 "main.c" 2
-# 1 "restSpot.h" 1
-
-void initRestSpot();
-void updateRestSpot();
-void drawRestSpot();
-# 58 "main.c" 2
 # 1 "sound.h" 1
 SOUND soundA;
 SOUND soundB;
@@ -238,7 +231,7 @@ void interruptHandler();
 void pauseSound();
 void unpauseSound();
 void stopSound();
-# 59 "main.c" 2
+# 57 "main.c" 2
 
 # 1 "titleScreen.h" 1
 # 22 "titleScreen.h"
@@ -249,7 +242,7 @@ extern const unsigned short titleScreenMap[1024];
 
 
 extern const unsigned short titleScreenPal[256];
-# 61 "main.c" 2
+# 59 "main.c" 2
 # 1 "instructionScreen.h" 1
 # 22 "instructionScreen.h"
 extern const unsigned short instructionScreenTiles[32];
@@ -259,7 +252,7 @@ extern const unsigned short instructionScreenMap[1024];
 
 
 extern const unsigned short instructionScreenPal[256];
-# 62 "main.c" 2
+# 60 "main.c" 2
 # 1 "battleScreen.h" 1
 # 22 "battleScreen.h"
 extern const unsigned short battleScreenTiles[448];
@@ -269,17 +262,17 @@ extern const unsigned short battleScreenMap[1024];
 
 
 extern const unsigned short battleScreenPal[256];
-# 63 "main.c" 2
+# 61 "main.c" 2
 # 1 "eventScreen.h" 1
 # 22 "eventScreen.h"
-extern const unsigned short eventScreenTiles[16];
+extern const unsigned short eventScreenTiles[608];
 
 
 extern const unsigned short eventScreenMap[1024];
 
 
 extern const unsigned short eventScreenPal[256];
-# 64 "main.c" 2
+# 62 "main.c" 2
 # 1 "mapScreen.h" 1
 # 22 "mapScreen.h"
 extern const unsigned short mapScreenTiles[128];
@@ -289,7 +282,7 @@ extern const unsigned short mapScreenMap[1024];
 
 
 extern const unsigned short mapScreenPal[256];
-# 65 "main.c" 2
+# 63 "main.c" 2
 # 1 "pauseScreen.h" 1
 # 22 "pauseScreen.h"
 extern const unsigned short pauseScreenTiles[208];
@@ -299,7 +292,7 @@ extern const unsigned short pauseScreenMap[1024];
 
 
 extern const unsigned short pauseScreenPal[256];
-# 66 "main.c" 2
+# 64 "main.c" 2
 # 1 "loseScreen.h" 1
 # 22 "loseScreen.h"
 extern const unsigned short loseScreenTiles[176];
@@ -309,7 +302,7 @@ extern const unsigned short loseScreenMap[1024];
 
 
 extern const unsigned short loseScreenPal[256];
-# 67 "main.c" 2
+# 65 "main.c" 2
 # 1 "winScreen.h" 1
 # 22 "winScreen.h"
 extern const unsigned short winScreenTiles[144];
@@ -319,22 +312,22 @@ extern const unsigned short winScreenMap[1024];
 
 
 extern const unsigned short winScreenPal[256];
-# 68 "main.c" 2
+# 66 "main.c" 2
 # 1 "cards.h" 1
 # 21 "cards.h"
 extern const unsigned short cardsTiles[16384];
 
 
 extern const unsigned short cardsPal[256];
-# 69 "main.c" 2
+# 67 "main.c" 2
 # 1 "punch.h" 1
 # 20 "punch.h"
 extern const unsigned char punch[5069];
-# 70 "main.c" 2
+# 68 "main.c" 2
 # 1 "humanMusic.h" 1
 # 20 "humanMusic.h"
 extern const unsigned char humanMusic[198504];
-# 71 "main.c" 2
+# 69 "main.c" 2
 
 
 
@@ -349,13 +342,9 @@ void goToMap();
 void map();
 void goToBattle();
 void battle();
-void goToMerchant();
-void merchant();
-void goToUnknownEvent();
+void goToShop(int i);
+void shop();
 void unknownEvent();
-void goToRestSpot();
-void restSpot();
-
 void goToPause();
 void pause();
 void goToWin();
@@ -368,7 +357,7 @@ SOUND soundA;
 SOUND soundB;
 
 
-enum {START, INSTRUCTIONS, MAP, BATTLE, MERCHANT, UNKNOWN_EVENT, REST_SPOT, PAUSE, WIN, LOSE};
+enum {START, INSTRUCTIONS, MAP, BATTLE, SHOP, UNKNOWN_EVENT, REST_SPOT, PAUSE, WIN, LOSE};
 int state;
 int stateBeforePause;
 
@@ -376,7 +365,7 @@ unsigned short buttons;
 unsigned short oldButtons;
 
 OBJ_ATTR shadowOAM[128];
-int oamIndexMask[128];
+int oamIndexMask[98];
 
 int main() {
     initialize();
@@ -404,14 +393,8 @@ int main() {
             case BATTLE:
                 battle();
                 break;
-            case MERCHANT:
-                merchant();
-                break;
-            case UNKNOWN_EVENT:
-                unknownEvent();
-                break;
-            case REST_SPOT:
-                restSpot();
+            case SHOP:
+                shop();
                 break;
             case PAUSE:
                 pause();
@@ -482,6 +465,7 @@ void instructions() {
 }
 
 void goToMap() {
+    hideSprites();
     clearAllOAM();
     initMapOAM();
     playSoundA(punch, 5069, 11025, 0);
@@ -508,15 +492,11 @@ void map() {
             break;
         case UNKNOWN_EVENT:
             stateToGo = 0;
-            goToUnknownEvent();
+            unknownEvent();
             break;
-        case REST_SPOT:
+        case SHOP:
             stateToGo = 0;
-            goToRestSpot();
-            break;
-        case MERCHANT:
-            stateToGo = 0;
-            goToMerchant();
+            goToShop(1);
             break;
     }
 }
@@ -545,72 +525,45 @@ void battle() {
         bossBattle = 0;
         goToWin();
     } else if (gameWon) {
+        player.coins += (rand() % 20) + 30;
         hideSprites();
         goToMap();
     }
 }
 
-void goToMerchant() {
+void goToShop(int init) {
     clearAllOAM();
+    hideSprites();
+    initShop(init);
     DMANow(3, eventScreenPal, ((unsigned short *)0x5000000), 512 / 2);
-    DMANow(3, eventScreenTiles, ((charblock *)0x6000000), 32 / 2);
+    DMANow(3, eventScreenTiles, ((charblock *)0x6000000), 1216 / 2);
     DMANow(3, eventScreenMap, &((screenblock *)0x6000000)[31], 2048 / 2);
-    state = MERCHANT;
+    state = SHOP;
 }
 
-void merchant() {
-    updateMerchant();
+void shop() {
+    updateShop();
     waitForVBlank();
-    drawMerchant();
+    drawShop();
 
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
-        stateBeforePause = MERCHANT;
+        stateBeforePause = SHOP;
         goToPause();
     }
 
-}
-
-void goToUnknownEvent() {
-    clearAllOAM();
-    DMANow(3, eventScreenPal, ((unsigned short *)0x5000000), 512 / 2);
-    DMANow(3, eventScreenTiles, ((charblock *)0x6000000), 32 / 2);
-    DMANow(3, eventScreenMap, &((screenblock *)0x6000000)[31], 2048 / 2);
-    state = UNKNOWN_EVENT;
+    if (leaveShop == 1) {
+        goToMap();
+    }
 }
 
 void unknownEvent() {
-    updateUnknownEvent();
-    waitForVBlank();
-    drawUnknownEvent();
 
-
-    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
-        stateBeforePause = UNKNOWN_EVENT;
-        goToPause();
+    if (rand() % 10 < 6) {
+        goToBattle();
+    } else {
+        goToShop(1);
     }
-
-}
-
-void goToRestSpot() {
-    clearAllOAM();
-    DMANow(3, eventScreenPal, ((unsigned short *)0x5000000), 512 / 2);
-    DMANow(3, eventScreenTiles, ((charblock *)0x6000000), 32 / 2);
-    DMANow(3, eventScreenMap, &((screenblock *)0x6000000)[31], 2048 / 2);
-    state = REST_SPOT;
-}
-
-void restSpot() {
-    updateRestSpot();
-    waitForVBlank();
-    drawRestSpot();
-
-
-    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
-        stateBeforePause = REST_SPOT;
-        goToPause();
-    }
-
 }
 
 
@@ -636,14 +589,8 @@ void pause() {
                 goToBattle();
                 drawBattleAfterPause();
                 break;
-            case UNKNOWN_EVENT:
-                goToUnknownEvent();
-                break;
-            case REST_SPOT:
-                goToRestSpot();
-                break;
-            case MERCHANT:
-                goToMerchant();
+            case SHOP:
+                goToShop(0);
                 break;
         }
     else if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2)))))

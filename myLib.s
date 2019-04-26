@@ -638,7 +638,7 @@ hideSprites:
 	@ link register save eliminated.
 	mov	r1, #512
 	ldr	r3, .L104
-	add	r2, r3, #1000
+	add	r2, r3, #1024
 .L101:
 	strh	r1, [r3], #8	@ movhi
 	cmp	r3, r2
@@ -665,7 +665,7 @@ getOAMIndex:
 	b	.L109
 .L107:
 	add	r0, r0, #1
-	cmp	r0, #125
+	cmp	r0, #98
 	beq	.L111
 .L109:
 	ldr	r2, [r3, #4]!
@@ -717,7 +717,7 @@ clearAllOAM:
 	@ link register save eliminated.
 	mov	r1, #0
 	ldr	r3, .L121
-	add	r2, r3, #512
+	add	r2, r3, #488
 .L118:
 	str	r1, [r3, #4]!
 	cmp	r3, r2
@@ -739,77 +739,93 @@ printNum:
 	@ args = 0, pretend = 0, frame = 16
 	@ frame_needed = 0, uses_anonymous_args = 0
 	mov	ip, r2
-	push	{r4, r5, r6, r7, r8, lr}
-	ldr	r3, .L140
+	push	{r4, r5, r6, r7, r8, r9, r10, lr}
+	ldr	r4, .L140
 	sub	sp, sp, #16
-	mov	r4, r0
+	mov	r5, r0
 	mov	lr, r1
-	ldm	r3, {r0, r1, r2}
+	ldm	r4, {r0, r1, r2}
+	add	r8, sp, #4
 	cmp	ip, #0
-	add	r3, sp, #4
-	stm	r3, {r0, r1, r2}
+	stm	r8, {r0, r1, r2}
 	ble	.L124
-	mov	r2, r3
-	ldr	r8, .L140+4
-	ldr	r5, .L140+8
+	ldr	r10, .L140+4
+	ldr	r9, .L140+8
 .L125:
-	smull	r6, r7, ip, r8
-	umull	r0, r1, ip, r5
-	asr	r3, ip, #31
-	rsb	r3, r3, r7, asr #2
-	add	r3, r3, r3, lsl #2
-	sub	r3, ip, r3, lsl #1
+	smull	r6, r7, ip, r10
+	umull	r0, r1, ip, r9
+	asr	r2, ip, #31
+	rsb	r2, r2, r7, asr #2
+	add	r2, r2, r2, lsl #2
+	sub	r2, ip, r2, lsl #1
 	lsrs	ip, r1, #3
-	str	r3, [r2], #4
+	str	r2, [r8], #4
 	bne	.L125
 .L124:
-	ldr	r3, [sp, #12]
-	cmn	r3, #1
-	beq	.L126
-	and	r2, r4, #255
-	mvn	r2, r2, lsl #17
-	mvn	r2, r2, lsr #17
 	ldr	r1, .L140+12
-	lsl	r0, lr, #23
-	add	r3, r3, #768
-	lsr	r0, r0, #23
-	strh	r3, [r1, #4]	@ movhi
-	strh	r2, [r1]	@ movhi
-	strh	r0, [r1, #2]	@ movhi
+	ldr	r6, [sp, #12]
+	ldr	r2, [r1]
+	cmn	r6, #1
+	add	r4, r4, r2, lsl #2
+	ldr	r0, [r4, #12]
+	beq	.L126
+	ldr	r4, .L140+16
+	sub	ip, r0, #2
+	lsl	ip, ip, #3
+	and	r8, r5, #255
+	strh	r8, [r4, ip]	@ movhi
+	lsl	r7, lr, #23
+	add	r8, r3, #24
+	add	ip, r4, ip
+	lsr	r7, r7, #23
+	add	r6, r6, r8, lsl #5
+	strh	r7, [ip, #2]	@ movhi
+	strh	r6, [ip, #4]	@ movhi
 .L126:
-	ldr	r2, [sp, #8]
-	cmn	r2, #1
+	ldr	r6, [sp, #8]
+	cmn	r6, #1
 	beq	.L127
-	and	r1, r4, #255
-	mvn	r1, r1, lsl #17
-	mvn	r1, r1, lsr #17
-	add	r3, lr, #5
-	ldr	r0, .L140+16
-	lsl	r3, r3, #23
-	add	r2, r2, #768
-	lsr	r3, r3, #23
-	strh	r2, [r0, #4]	@ movhi
-	strh	r1, [r0]	@ movhi
-	strh	r3, [r0, #2]	@ movhi
+	ldr	r7, .L140+16
+	sub	r4, r0, #1
+	lsl	r4, r4, #3
+	and	r8, r5, #255
+	add	ip, lr, #5
+	strh	r8, [r7, r4]	@ movhi
+	lsl	ip, ip, #23
+	add	r8, r3, #24
+	add	r4, r7, r4
+	lsr	ip, ip, #23
+	add	r6, r6, r8, lsl #5
+	strh	ip, [r4, #2]	@ movhi
+	strh	r6, [r4, #4]	@ movhi
 .L127:
-	ldr	r3, [sp, #4]
-	cmn	r3, #1
-	beq	.L123
-	and	r4, r4, #255
-	mvn	r4, r4, lsl #17
-	mvn	r4, r4, lsr #17
+	ldr	ip, [sp, #4]
+	cmn	ip, #1
+	beq	.L128
+	ldr	r6, .L140+16
 	add	lr, lr, #10
-	ldr	r2, .L140+20
+	lsl	r4, r0, #3
 	lsl	lr, lr, #23
+	add	r3, r3, #24
+	add	r3, ip, r3, lsl #5
 	lsr	lr, lr, #23
-	add	r3, r3, #768
-	strh	r4, [r2]	@ movhi
-	strh	lr, [r2, #2]	@ movhi
-	strh	r3, [r2, #4]	@ movhi
-.L123:
+	add	ip, r6, r4
+	and	r5, r5, #255
+	strh	r5, [r6, r4]	@ movhi
+	strh	lr, [ip, #2]	@ movhi
+	strh	r3, [ip, #4]	@ movhi
+.L128:
+	ldr	ip, .L140+4
+	add	r3, r2, #1
+	smull	r4, r5, r3, ip
+	asr	r2, r3, #31
+	rsb	r2, r2, r5, asr #2
+	add	r2, r2, r2, lsl #2
+	sub	r3, r3, r2, lsl #1
+	str	r3, [r1]
 	add	sp, sp, #16
 	@ sp needed
-	pop	{r4, r5, r6, r7, r8, lr}
+	pop	{r4, r5, r6, r7, r8, r9, r10, lr}
 	bx	lr
 .L141:
 	.align	2
@@ -817,9 +833,8 @@ printNum:
 	.word	.LANCHOR1
 	.word	1717986919
 	.word	-858993459
-	.word	shadowOAM+1000
-	.word	shadowOAM+1008
-	.word	shadowOAM+1016
+	.word	.LANCHOR2
+	.word	shadowOAM
 	.size	printNum, .-printNum
 	.global	dma
 	.global	videoBuffer
@@ -830,6 +845,19 @@ printNum:
 	.word	-1
 	.word	-1
 	.word	-1
+	.type	oamNumIndex, %object
+	.size	oamNumIndex, 40
+oamNumIndex:
+	.word	127
+	.word	124
+	.word	121
+	.word	118
+	.word	115
+	.word	112
+	.word	109
+	.word	106
+	.word	103
+	.word	101
 	.data
 	.align	2
 	.set	.LANCHOR0,. + 0
@@ -841,4 +869,11 @@ videoBuffer:
 	.size	dma, 4
 dma:
 	.word	67109040
+	.bss
+	.align	2
+	.set	.LANCHOR2,. + 0
+	.type	currentNumIndex, %object
+	.size	currentNumIndex, 4
+currentNumIndex:
+	.space	4
 	.ident	"GCC: (devkitARM release 47) 7.1.0"

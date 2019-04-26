@@ -1235,6 +1235,7 @@ typedef struct {
 
 typedef struct {
     int health;
+    int coins;
     int block;
     int actionPoints;
     int deckLength;
@@ -1270,9 +1271,9 @@ typedef struct {
     int hide;
     int oamIndex;
 } ANISPRITE;
-# 132 "myLib.h"
+# 133 "myLib.h"
 extern unsigned short *videoBuffer;
-# 153 "myLib.h"
+# 154 "myLib.h"
 typedef struct {
  u16 tileimg[8192];
 } charblock;
@@ -1316,12 +1317,12 @@ typedef struct {
 
 extern OBJ_ATTR shadowOAM[];
 extern int oamIndexMask[];
-# 226 "myLib.h"
+# 227 "myLib.h"
 void hideSprites();
-# 250 "myLib.h"
+# 251 "myLib.h"
 extern unsigned short oldButtons;
 extern unsigned short buttons;
-# 261 "myLib.h"
+# 262 "myLib.h"
 typedef volatile struct {
     volatile const void *src;
     volatile void *dst;
@@ -1330,9 +1331,9 @@ typedef volatile struct {
 
 
 extern DMA *dma;
-# 301 "myLib.h"
+# 302 "myLib.h"
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
-# 385 "myLib.h"
+# 386 "myLib.h"
 typedef struct{
     const unsigned char* data;
     int length;
@@ -1357,7 +1358,7 @@ void freeOAMIndex(int i);
 
 int getOAMIndex();
 
-void printNum(int row, int col, int num);
+int printNum(int row, int col, int num, int rowOffset);
 # 4 "map.c" 2
 # 1 "battle.h" 1
 
@@ -1375,7 +1376,7 @@ void drawBlockMeter();
 
 
 extern Player player;
-
+extern int masterDeck[10][12];
 extern int gameOver;
 extern int gameWon;
 extern int bossBattle;
@@ -1390,7 +1391,7 @@ int distanceBetween(int row1, int col1, int row2, int col2);
 int getShipFrame();
 void checkMapSelector();
 void initMapOAM();
-
+void heal();
 
 extern int stateToGo;
 # 6 "map.c" 2
@@ -1718,7 +1719,11 @@ void initMap() {
             colOffset = rand() % 40;
             mapNode.worldRow = MAP_ROW + (i*64) + rowOffset;
             mapNode.worldCol = MAP_COL + (j*64) + colOffset;
-            mapNode.type = rand() % 4;
+            if (rand() % 4 < 2) {
+                mapNode.type = rand() % 2;
+            } else {
+                mapNode.type = (rand() % 2) + 2;
+            }
             mapNode.sheetRow = 16;
             mapNode.sheetCol = 2+(2*mapNode.type);
             mapNode.visited = 0;
@@ -1815,7 +1820,10 @@ void checkMapSelector() {
             player.shipRow = node.worldRow;
             player.shipCol = node.worldCol;
             checkMap();
-            stateToGo = (node.type != 0) ? 0 : node.type + 3;
+            stateToGo = node.type + 3;
+            if (node.type == 3) {
+                heal();
+            }
             map[i] = node;
         }
     }
@@ -1826,6 +1834,14 @@ void checkMapSelector() {
             player.shipCol = bossNode.worldCol;
             bossBattle = 1;
             stateToGo = 3;
+    }
+}
+
+void heal() {
+    if (player.health + 20 > 100) {
+        player.health = 100;
+    } else {
+        player.health += 20;
     }
 }
 

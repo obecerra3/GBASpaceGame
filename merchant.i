@@ -1235,6 +1235,7 @@ typedef struct {
 
 typedef struct {
     int health;
+    int coins;
     int block;
     int actionPoints;
     int deckLength;
@@ -1270,9 +1271,9 @@ typedef struct {
     int hide;
     int oamIndex;
 } ANISPRITE;
-# 132 "myLib.h"
+# 133 "myLib.h"
 extern unsigned short *videoBuffer;
-# 153 "myLib.h"
+# 154 "myLib.h"
 typedef struct {
  u16 tileimg[8192];
 } charblock;
@@ -1316,12 +1317,12 @@ typedef struct {
 
 extern OBJ_ATTR shadowOAM[];
 extern int oamIndexMask[];
-# 226 "myLib.h"
+# 227 "myLib.h"
 void hideSprites();
-# 250 "myLib.h"
+# 251 "myLib.h"
 extern unsigned short oldButtons;
 extern unsigned short buttons;
-# 261 "myLib.h"
+# 262 "myLib.h"
 typedef volatile struct {
     volatile const void *src;
     volatile void *dst;
@@ -1330,9 +1331,9 @@ typedef volatile struct {
 
 
 extern DMA *dma;
-# 301 "myLib.h"
+# 302 "myLib.h"
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
-# 385 "myLib.h"
+# 386 "myLib.h"
 typedef struct{
     const unsigned char* data;
     int length;
@@ -1357,13 +1358,15 @@ void freeOAMIndex(int i);
 
 int getOAMIndex();
 
-void printNum(int row, int col, int num);
+void printNum(int row, int col, int num, int hide);
 # 4 "merchant.c" 2
 # 1 "merchant.h" 1
 
 void initMerchant();
 void updateMerchant();
 void drawMerchant();
+void checkMerchantSelector();
+void drawMerchantCards();
 # 5 "merchant.c" 2
 # 1 "eventScreen.h" 1
 # 22 "eventScreen.h"
@@ -1382,9 +1385,84 @@ extern const unsigned short spritesheetTiles[16384];
 
 extern const unsigned short spritesheetPal[256];
 # 7 "merchant.c" 2
+# 1 "battle.h" 1
 
-void initMerchant() {}
+void initBattle();
+void updateBattle();
+void drawBattle();
+void initGame();
+void checkSelector();
+void newHand();
+void drawHand();
+void drawBattleAfterPause();
+void drawPlayerStatus();
+void drawEnemyStatus();
+void drawBlockMeter();
 
-void updateMerchant() {}
 
-void drawMerchant() {}
+extern Player player;
+extern int masterDeck[10][12];
+extern int gameOver;
+extern int gameWon;
+extern int bossBattle;
+# 8 "merchant.c" 2
+
+int cardsForSale[3];
+int deckOAM[3];
+
+
+int cardsCol[3] = {25, 87, 150};
+
+enum {SHEET_COL, SHEET_ROW};
+
+
+void initMerchant() {
+    player.selector.oamIndex = getOAMIndex();
+    for (int i = 0; i < 3; i++) {
+        cardsForSale[i] = rand() % 10;
+        deckOAM[i] = getOAMIndex();
+    }
+    drawMerchantCards();
+}
+
+void updateMerchant() {
+
+    if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<4))) && player.selector.screenCol < 238 - player.selector.width) {
+        player.selector.screenCol += player.selector.dCol;
+    }
+    if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<5))) && player.selector.screenCol > 2) {
+        player.selector.screenCol -= player.selector.dCol;
+    }
+    if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<6))) && player.selector.screenRow > 2) {
+        player.selector.screenRow -= player.selector.dRow;
+    }
+    if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<7))) && player.selector.screenRow < 158 - player.selector.height) {
+        player.selector.screenRow += player.selector.dRow;
+    }
+}
+
+void drawMerchantCards() {
+    int oamIndex;
+    for (int i = 0; i < 3; i++) {
+        oamIndex = deckOAM[i];
+        shadowOAM[oamIndex].attr0 = (70 & 0xFF) | (0<<8) | (0<<14) | (0<<13);
+        shadowOAM[oamIndex].attr1 = (cardsCol[i] & 0x1FF) | (3<<14);
+        shadowOAM[oamIndex].attr2 = ((masterDeck[cardsForSale[i]][SHEET_ROW])*32+(masterDeck[cardsForSale[i]][SHEET_COL]));
+
+
+
+
+
+
+
+    }
+}
+
+void drawMerchant() {
+
+    shadowOAM[player.selector.oamIndex].attr0 = (player.selector.screenRow & 0xFF) | (0<<8) | (0<<14) | (0<<13);
+    shadowOAM[player.selector.oamIndex].attr1 = (player.selector.screenCol & 0x1FF) | (1<<14);
+    shadowOAM[player.selector.oamIndex].attr2 = ((player.selector.sheetRow)*32+(player.selector.sheetCol));
+}
+
+void checkMerchantSelector() {}

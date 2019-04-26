@@ -1,7 +1,7 @@
-# 1 "restSpot.c"
+# 1 "shop.c"
 # 1 "<built-in>"
 # 1 "<command-line>"
-# 1 "restSpot.c"
+# 1 "shop.c"
 # 1 "/Users/obecerra/Desktop/devkitARM/arm-none-eabi/include/stdlib.h" 1 3
 # 10 "/Users/obecerra/Desktop/devkitARM/arm-none-eabi/include/stdlib.h" 3
 # 1 "/Users/obecerra/Desktop/devkitARM/arm-none-eabi/include/machine/ieeefp.h" 1 3
@@ -795,7 +795,7 @@ extern long double _strtold_r (struct _reent *, const char *restrict, char **res
 extern long double strtold (const char *restrict, char **restrict);
 # 333 "/Users/obecerra/Desktop/devkitARM/arm-none-eabi/include/stdlib.h" 3
 
-# 2 "restSpot.c" 2
+# 2 "shop.c" 2
 # 1 "/Users/obecerra/Desktop/devkitARM/arm-none-eabi/include/stdio.h" 1 3
 # 36 "/Users/obecerra/Desktop/devkitARM/arm-none-eabi/include/stdio.h" 3
 # 1 "/Users/obecerra/Desktop/devkitARM/lib/gcc/arm-none-eabi/7.1.0/include/stddef.h" 1 3 4
@@ -1188,7 +1188,7 @@ static __inline__ int __sputc_r(struct _reent *_ptr, int _c, FILE *_p) {
 }
 # 767 "/Users/obecerra/Desktop/devkitARM/arm-none-eabi/include/stdio.h" 3
 
-# 3 "restSpot.c" 2
+# 3 "shop.c" 2
 # 1 "myLib.h" 1
 
 
@@ -1235,6 +1235,7 @@ typedef struct {
 
 typedef struct {
     int health;
+    int coins;
     int block;
     int actionPoints;
     int deckLength;
@@ -1270,9 +1271,9 @@ typedef struct {
     int hide;
     int oamIndex;
 } ANISPRITE;
-# 132 "myLib.h"
+# 133 "myLib.h"
 extern unsigned short *videoBuffer;
-# 153 "myLib.h"
+# 154 "myLib.h"
 typedef struct {
  u16 tileimg[8192];
 } charblock;
@@ -1316,12 +1317,12 @@ typedef struct {
 
 extern OBJ_ATTR shadowOAM[];
 extern int oamIndexMask[];
-# 226 "myLib.h"
+# 227 "myLib.h"
 void hideSprites();
-# 250 "myLib.h"
+# 251 "myLib.h"
 extern unsigned short oldButtons;
 extern unsigned short buttons;
-# 261 "myLib.h"
+# 262 "myLib.h"
 typedef volatile struct {
     volatile const void *src;
     volatile void *dst;
@@ -1330,9 +1331,9 @@ typedef volatile struct {
 
 
 extern DMA *dma;
-# 301 "myLib.h"
+# 302 "myLib.h"
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
-# 385 "myLib.h"
+# 386 "myLib.h"
 typedef struct{
     const unsigned char* data;
     int length;
@@ -1357,34 +1358,152 @@ void freeOAMIndex(int i);
 
 int getOAMIndex();
 
-void printNum(int row, int col, int num);
-# 4 "restSpot.c" 2
-# 1 "restSpot.h" 1
+int printNum(int row, int col, int num, int rowOffset);
+# 4 "shop.c" 2
+# 1 "shop.h" 1
 
-void initRestSpot();
-void updateRestSpot();
-void drawRestSpot();
-# 5 "restSpot.c" 2
+void initShop();
+void updateShop();
+void drawShop();
+void checkShopSelector();
+void drawShopCards();
+
+extern int leaveShop;
+# 5 "shop.c" 2
 # 1 "eventScreen.h" 1
 # 22 "eventScreen.h"
-extern const unsigned short eventScreenTiles[16];
+extern const unsigned short eventScreenTiles[608];
 
 
 extern const unsigned short eventScreenMap[1024];
 
 
 extern const unsigned short eventScreenPal[256];
-# 6 "restSpot.c" 2
+# 6 "shop.c" 2
 # 1 "spriteSheet.h" 1
 # 21 "spriteSheet.h"
 extern const unsigned short spritesheetTiles[16384];
 
 
 extern const unsigned short spritesheetPal[256];
-# 7 "restSpot.c" 2
+# 7 "shop.c" 2
+# 1 "battle.h" 1
 
-void initRestSpot() {}
+void initBattle();
+void updateBattle();
+void drawBattle();
+void initGame();
+void checkSelector();
+void newHand();
+void drawHand();
+void drawBattleAfterPause();
+void drawPlayerStatus();
+void drawEnemyStatus();
+void drawBlockMeter();
 
-void updateRestSpot() {}
 
-void drawRestSpot() {}
+extern Player player;
+extern int masterDeck[10][12];
+extern int gameOver;
+extern int gameWon;
+extern int bossBattle;
+# 8 "shop.c" 2
+
+static int cardsForSale[3];
+int deckOAM[3];
+static int cardsBought[3];
+int leaveShop;
+
+
+
+
+int cardsCol[3] = {25, 87, 150};
+
+enum {SHEET_COL, SHEET_ROW};
+
+Box exitButton;
+
+
+void initShop(int newStock) {
+    leaveShop = 0;
+    player.selector.oamIndex = getOAMIndex();
+    for (int i = 0; i < 3; i++) {
+        if (newStock == 1) {
+            cardsForSale[i] = rand() % 10;
+            cardsBought[i] = 0;
+        }
+        deckOAM[i] = getOAMIndex();
+    }
+    Box newBox = {.width = 16, .height = 16, .sheetRow = 22, .sheetCol = 6, .screenRow = 140, .screenCol = 200, .oamIndex = getOAMIndex()};
+    exitButton = newBox;
+    drawShopCards();
+}
+
+void updateShop() {
+
+    if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<4))) && player.selector.screenCol < 238 - player.selector.width) {
+        player.selector.screenCol += player.selector.dCol;
+    }
+    if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<5))) && player.selector.screenCol > 2) {
+        player.selector.screenCol -= player.selector.dCol;
+    }
+    if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<6))) && player.selector.screenRow > 2) {
+        player.selector.screenRow -= player.selector.dRow;
+    }
+    if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<7))) && player.selector.screenRow < 158 - player.selector.height) {
+        player.selector.screenRow += player.selector.dRow;
+    }
+
+    if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0))))) {
+        checkShopSelector();
+    }
+}
+
+void drawShopCards() {
+    hideSprites();
+    int oamIndex;
+    printNum(5, 218, player.coins, 0);
+    for (int i = 0; i < 3; i++) {
+        oamIndex = deckOAM[i];
+        if (cardsBought[i] == 0) {
+            shadowOAM[oamIndex].attr0 = (70 & 0xFF) | (0<<8) | (0<<14) | (0<<13);
+            shadowOAM[oamIndex].attr1 = (cardsCol[i] & 0x1FF) | (3<<14);
+            shadowOAM[oamIndex].attr2 = ((masterDeck[cardsForSale[i]][SHEET_ROW])*32+(masterDeck[cardsForSale[i]][SHEET_COL]));
+            printNum(70 - 9, cardsCol[i] + 23, masterDeck[cardsForSale[i]][11], 0);
+        } else {
+            shadowOAM[oamIndex].attr0 = (2<<8);
+            printNum(70 - 9, cardsCol[i] + 23, masterDeck[cardsForSale[i]][11], 1);
+        }
+    }
+}
+
+void drawShop() {
+
+    shadowOAM[player.selector.oamIndex].attr0 = (player.selector.screenRow & 0xFF) | (0<<8) | (0<<14) | (0<<13);
+    shadowOAM[player.selector.oamIndex].attr1 = (player.selector.screenCol & 0x1FF) | (1<<14);
+    shadowOAM[player.selector.oamIndex].attr2 = ((player.selector.sheetRow)*32+(player.selector.sheetCol));
+
+
+    shadowOAM[exitButton.oamIndex].attr0 = (exitButton.screenRow & 0xFF) | (0<<8) | (0<<14) | (0<<13);
+    shadowOAM[exitButton.oamIndex].attr1 = (exitButton.screenCol & 0x1FF) | (1<<14);
+    shadowOAM[exitButton.oamIndex].attr2 = ((exitButton.sheetRow)*32+(exitButton.sheetCol));
+}
+
+void checkShopSelector() {
+    for (int i = 0; i < 3; i++) {
+        if (collision(player.selector.screenRow, player.selector.screenCol, player.selector.height, player.selector.width,
+                70 + 4, cardsCol[i] + 12, 51, 39)) {
+            if (masterDeck[cardsForSale[i]][11] <= player.coins) {
+                player.coins -= masterDeck[cardsForSale[i]][11];
+                cardsBought[i] = 1;
+                drawShopCards();
+            }
+        }
+    }
+
+    if (collision(player.selector.screenRow, player.selector.screenCol, player.selector.height, player.selector.width,
+                exitButton.screenRow, exitButton.screenCol, 15, 15)) {
+        leaveShop = 1;
+    }
+
+}

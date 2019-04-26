@@ -13,7 +13,7 @@ void drawBlockMeter();
 
 //global variables
 extern Player player;
-//extern Card masterDeck[10];
+extern int masterDeck[10][12];
 extern int gameOver;
 extern int gameWon;
 extern int bossBattle;
