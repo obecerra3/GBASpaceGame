@@ -9,7 +9,7 @@
 
 int stateToGo;
 
-#define MAP_LEN 25
+#define MAP_LEN 36
 static MapNode map[MAP_LEN];
 
 int mapRow;
@@ -18,6 +18,9 @@ int mapCol;
 MapNode bossNode;
 
 int frame;
+
+int hOff = 0;
+int vOff = 0;
 
 void initMap() {
     /*
@@ -35,12 +38,12 @@ void initMap() {
     int MAP_COL = 0;
     int rowOffset;
     int colOffset;
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0;j < 5; j++) {
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0;j < 6; j++) {
             rowOffset = rand() % 40;
             colOffset = rand() % 40;
-            mapNode.worldRow = MAP_ROW + (i*64) + rowOffset; //64 magic number for 4 * mapNodeSize
-            mapNode.worldCol = MAP_COL + (j*64) + colOffset;
+            mapNode.worldRow = MAP_ROW + (i*90) + rowOffset; //64 magic number for 4 * mapNodeSize
+            mapNode.worldCol = MAP_COL + (j*90) + colOffset;
             if (rand() % 4 < 2) {
                 mapNode.type = rand() % 2;
             } else {
@@ -54,7 +57,7 @@ void initMap() {
             count++;
         }
     }
-    MapNode newNode = {.worldRow = 300, .worldCol = 300, .type = 3, .sheetRow = 20, .sheetCol = 2}; //.oamIndex = 28
+    MapNode newNode = {.worldRow = 400, .worldCol = 430, .type = 3, .sheetRow = 20, .sheetCol = 2}; //.oamIndex = 28
     bossNode = newNode;
     checkMap();
 }
@@ -72,7 +75,7 @@ void checkMap() {
     MapNode node;
     for (int i = 0; i < MAP_LEN; i++) {
         node = map[i];
-        if (distanceBetween(player.shipRow, player.shipCol, node.worldRow, node.worldCol) <= 100 && !node.visited) {
+        if (distanceBetween(player.shipRow, player.shipCol, node.worldRow, node.worldCol) <= 150 && !node.visited) {
             node.sheetRow = 18;
             node.inRange = 1;
         } else if (!node.visited) {
@@ -92,8 +95,9 @@ void updateMap() {
         if (player.selector.screenCol < 238 - player.selector.width) {
             player.selector.screenCol += player.selector.dCol;
         }
-        if (player.selector.screenCol > 210 && mapCol < SCREENWIDTH-130) {
+        if (player.selector.screenCol > 210 && mapCol < SCREENWIDTH+40) { //130
             mapCol+=3;
+            hOff++;
         }
     }
     if (BUTTON_HELD(BUTTON_LEFT)) {
@@ -102,6 +106,7 @@ void updateMap() {
         }
         if (player.selector.screenCol < 30 && mapCol > -30) {
             mapCol-=3;
+            hOff--;
         }
     }
     if (BUTTON_HELD(BUTTON_UP)) {
@@ -110,14 +115,16 @@ void updateMap() {
         }
         if (player.selector.screenRow < 30 && mapRow > -40) {
             mapRow-=3;
+            vOff--;
         }
     }
     if (BUTTON_HELD(BUTTON_DOWN)) {
         if (player.selector.screenRow < 158 - player.selector.height) {
             player.selector.screenRow += player.selector.dRow;
         }
-        if (player.selector.screenRow > 130 && mapRow < SCREENHEIGHT+20) {
+        if (player.selector.screenRow > 130 && mapRow < SCREENHEIGHT+130) { //20
             mapRow+=3;
+            vOff++;
         }
     }
 
@@ -129,6 +136,9 @@ void updateMap() {
     if (frame > 81) {
         frame = 0;
     }
+
+    REG_BG0HOFF = hOff;
+    REG_BG0VOFF = vOff;
 }
 
 void checkMapSelector() {
@@ -142,16 +152,18 @@ void checkMapSelector() {
             player.shipRow = node.worldRow;
             player.shipCol = node.worldCol;
             checkMap();
-            stateToGo = node.type + 3; //(node.type != 0) ? 0 : node.type + 3;
             if (node.type == 3) {
                 heal();
+            } else {
+                stateToGo = node.type + 3;
             }
             map[i] = node;
         }
     }
 
     if (collision(player.selector.screenRow, player.selector.screenCol, 16, 16,
-        (bossNode.worldRow - mapRow) & ROWMASK, (bossNode.worldCol - mapCol) & COLMASK, 16, 16)) {
+        (bossNode.worldRow - mapRow) & ROWMASK, (bossNode.worldCol - mapCol) & COLMASK, 16, 16)
+        && distanceBetween(player.shipRow, player.shipCol, bossNode.worldRow, bossNode.worldCol) <= 150) {
             player.shipRow = bossNode.worldRow;
             player.shipCol = bossNode.worldCol;
             bossBattle = 1;
@@ -160,17 +172,14 @@ void checkMapSelector() {
 }
 
 void heal() {
-    int increment = 20 + (rand() % 15);
-    if (player.health + increment > 100) {
-        player.health = 100;
+    if (player.health <= 60) {
+        player.health += 20;
     } else {
-        player.health += increment;
+        player.health = 80;
     }
 }
 
 void drawMap() {
-    /*
-    */
     //draw selector
     shadowOAM[player.selector.oamIndex].attr0 = (player.selector.screenRow & ROWMASK) | ATTR0_REGULAR | ATTR0_SQUARE | ATTR0_4BPP;
     shadowOAM[player.selector.oamIndex].attr1 = (player.selector.screenCol & COLMASK) | ATTR1_SMALL;
@@ -184,7 +193,6 @@ void drawMap() {
     } else {
         shadowOAM[player.shipOAMIndex].attr0 = ATTR0_HIDE;
     }
-
 
     //draw bossBattleNode
     if (collision(bossNode.worldRow, bossNode.worldCol, 16, 16, mapRow - 15, mapCol - 15, SCREENHEIGHT + 15, SCREENWIDTH + 15)) {

@@ -1244,7 +1244,7 @@ typedef struct {
     int shipRow;
     int shipOAMIndex;
     Box selector;
-    Card deck[20];
+    Card deck[40];
 } Player;
 
 typedef struct {
@@ -1372,7 +1372,7 @@ extern int leaveShop;
 # 5 "shop.c" 2
 # 1 "eventScreen.h" 1
 # 22 "eventScreen.h"
-extern const unsigned short eventScreenTiles[608];
+extern const unsigned short eventScreenTiles[1184];
 
 
 extern const unsigned short eventScreenMap[1024];
@@ -1407,6 +1407,7 @@ extern int masterDeck[10][12];
 extern int gameOver;
 extern int gameWon;
 extern int bossBattle;
+extern int cheatOn;
 # 8 "shop.c" 2
 
 static int cardsForSale[3];
@@ -1434,7 +1435,7 @@ void initShop(int newStock) {
         }
         deckOAM[i] = getOAMIndex();
     }
-    Box newBox = {.width = 16, .height = 16, .sheetRow = 22, .sheetCol = 6, .screenRow = 140, .screenCol = 200, .oamIndex = getOAMIndex()};
+    Box newBox = {.width = 16, .height = 16, .sheetRow = 22, .sheetCol = 6, .screenRow = 140, .screenCol = 215, .oamIndex = getOAMIndex()};
     exitButton = newBox;
     drawShopCards();
 }
@@ -1493,10 +1494,13 @@ void checkShopSelector() {
     for (int i = 0; i < 3; i++) {
         if (collision(player.selector.screenRow, player.selector.screenCol, player.selector.height, player.selector.width,
                 70 + 4, cardsCol[i] + 12, 51, 39)) {
-            if (masterDeck[cardsForSale[i]][11] <= player.coins) {
+            if (masterDeck[cardsForSale[i]][11] <= player.coins && player.deckLength < 40) {
                 player.coins -= masterDeck[cardsForSale[i]][11];
                 cardsBought[i] = 1;
                 drawShopCards();
+                Card newCard = {.used = 0, .index = cardsForSale[i]};
+                player.deck[player.deckLength] = newCard;
+                player.deckLength++;
             }
         }
     }

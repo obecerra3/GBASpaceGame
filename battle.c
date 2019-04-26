@@ -12,6 +12,7 @@ int currentCardsRow = 101;
 int gameOver;
 int gameWon;
 int bossBattle;
+int cheatOn;
 
 int cardsRemaining;
 
@@ -55,8 +56,17 @@ int deckOAM[4];
 int actionPointsOAM[5];
 
 void initBattle() {
+    player.block = 0;
     hideSprites();
-    Enemy newEnemy = {.health = 5};
+    int enemyHealth;
+    if (cheatOn == 1) {
+        enemyHealth = 5;
+    } else if (bossBattle == 1) {
+        enemyHealth = 80;
+    } else {
+        enemyHealth = 55;
+    }
+    Enemy newEnemy = {.health = enemyHealth};
     player.actionPoints = 3;
     for (int i = 0; i < player.deckLength; i++) {
         player.deck[i].used = 0;
@@ -75,6 +85,7 @@ void initBattle() {
         if (i < 5) {
             playerBlockOAM[i] = getOAMIndex();
             enemyBlockOAM[i] = getOAMIndex();
+            actionPointsOAM[i] = getOAMIndex();
             if (i < 4) {
                 deckOAM[i] = getOAMIndex();
             }
@@ -129,6 +140,12 @@ void updateBattle() {
     }
     if (BUTTON_HELD(BUTTON_DOWN) && player.selector.screenRow < 158 - player.selector.height) {
         player.selector.screenRow += player.selector.dRow;
+    }
+
+    if (BUTTON_PRESSED(BUTTON_B)) {
+        battleState = ENEMYTURN;
+        player.actionPoints = 3;
+        newHand();
     }
 
     if (player.health <= 0) {
@@ -325,9 +342,10 @@ void checkSelector() {
 
 
 void initGame() {
+    cheatOn = 0;
     bossBattle = 0;
     Box newSelector = {.width = 16, .height = 16, .sheetRow = 16, .sheetCol = 0, .screenRow = 65, .screenCol = 105, .dRow = 3, .dCol = 3};
-    Player newPlayer = {.health = 80, .coins = rand() % 40, .actionPoints = 3, .deckLength = 8, .selector = newSelector, .selectorEnabled = 0, .shipCol = -11, .shipRow = -20};
+    Player newPlayer = {.health = 70, .coins = rand() % 40, .actionPoints = 3, .deckLength = 6, .selector = newSelector, .selectorEnabled = 0, .shipCol = -11, .shipRow = -20};
     player = newPlayer;
     int initialCards[6] = {FIRE1, BLOCK1, FIRE2, BLOCK2, REDO, ENERGY};
     for (int i = 0; i < 6; i++) {

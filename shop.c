@@ -31,7 +31,7 @@ void initShop(int newStock) {
         }
         deckOAM[i] = getOAMIndex();
     }
-    Box newBox = {.width = 16, .height = 16, .sheetRow = 22, .sheetCol = 6, .screenRow = 140, .screenCol = 200, .oamIndex = getOAMIndex()};
+    Box newBox = {.width = 16, .height = 16, .sheetRow = 22, .sheetCol = 6, .screenRow = 140, .screenCol = 215, .oamIndex = getOAMIndex()};
     exitButton = newBox;
     drawShopCards();
 }
@@ -90,10 +90,13 @@ void checkShopSelector() {
     for (int i = 0; i < 3; i++) {
         if (collision(player.selector.screenRow, player.selector.screenCol, player.selector.height, player.selector.width,
                 CARDS_ROW + 4, cardsCol[i] + 12, CARD_HEIGHT, CARD_WIDTH)) {
-            if (masterDeck[cardsForSale[i]][11] <= player.coins) {
+            if (masterDeck[cardsForSale[i]][11] <= player.coins && player.deckLength < 40) {
                 player.coins -= masterDeck[cardsForSale[i]][11];
                 cardsBought[i] = 1;
                 drawShopCards();
+                Card newCard = {.used = 0, .index = cardsForSale[i]};
+                player.deck[player.deckLength] = newCard;
+                player.deckLength++;
             }
         }
     }

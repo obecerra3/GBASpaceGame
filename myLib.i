@@ -55,7 +55,7 @@ typedef struct {
     int shipRow;
     int shipOAMIndex;
     Box selector;
-    Card deck[20];
+    Card deck[40];
 } Player;
 
 typedef struct {
@@ -352,6 +352,12 @@ void clearAllOAM() {
 }
 
 int printNum(int row, int col, int num, int rowOffset) {
+    if (num == 0) {
+        num = 888;
+    } else if (num < 0) {
+        num = 999;
+    }
+
     int nums[3] = {-1,-1,-1};
     int i = 0;
     while (num > 0) {

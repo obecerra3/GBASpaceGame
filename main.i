@@ -56,7 +56,7 @@ typedef struct {
     int shipRow;
     int shipOAMIndex;
     Box selector;
-    Card deck[20];
+    Card deck[40];
 } Player;
 
 typedef struct {
@@ -206,6 +206,7 @@ extern int masterDeck[10][12];
 extern int gameOver;
 extern int gameWon;
 extern int bossBattle;
+extern int cheatOn;
 # 55 "main.c" 2
 # 1 "shop.h" 1
 
@@ -235,7 +236,7 @@ void stopSound();
 
 # 1 "titleScreen.h" 1
 # 22 "titleScreen.h"
-extern const unsigned short titleScreenTiles[352];
+extern const unsigned short titleScreenTiles[4304];
 
 
 extern const unsigned short titleScreenMap[1024];
@@ -255,7 +256,7 @@ extern const unsigned short instructionScreenPal[256];
 # 60 "main.c" 2
 # 1 "battleScreen.h" 1
 # 22 "battleScreen.h"
-extern const unsigned short battleScreenTiles[448];
+extern const unsigned short battleScreenTiles[2080];
 
 
 extern const unsigned short battleScreenMap[1024];
@@ -265,7 +266,7 @@ extern const unsigned short battleScreenPal[256];
 # 61 "main.c" 2
 # 1 "eventScreen.h" 1
 # 22 "eventScreen.h"
-extern const unsigned short eventScreenTiles[608];
+extern const unsigned short eventScreenTiles[1184];
 
 
 extern const unsigned short eventScreenMap[1024];
@@ -273,19 +274,19 @@ extern const unsigned short eventScreenMap[1024];
 
 extern const unsigned short eventScreenPal[256];
 # 62 "main.c" 2
-# 1 "mapScreen.h" 1
-# 22 "mapScreen.h"
-extern const unsigned short mapScreenTiles[128];
+# 1 "mapBackground.h" 1
+# 22 "mapBackground.h"
+extern const unsigned short mapBackgroundTiles[4304];
 
 
-extern const unsigned short mapScreenMap[1024];
+extern const unsigned short mapBackgroundMap[4096];
 
 
-extern const unsigned short mapScreenPal[256];
+extern const unsigned short mapBackgroundPal[256];
 # 63 "main.c" 2
 # 1 "pauseScreen.h" 1
 # 22 "pauseScreen.h"
-extern const unsigned short pauseScreenTiles[208];
+extern const unsigned short pauseScreenTiles[1872];
 
 
 extern const unsigned short pauseScreenMap[1024];
@@ -421,8 +422,6 @@ void initialize() {
     hideSprites();
     waitForVBlank();
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 128 * 4);
-    srand(time(0));
-
     goToStart();
 }
 
@@ -431,7 +430,7 @@ void goToStart() {
     hideSprites();
     clearAllOAM();
     DMANow(3, titleScreenPal, ((unsigned short *)0x5000000), 512 / 2);
-    DMANow(3, titleScreenTiles, ((charblock *)0x6000000), 704 / 2);
+    DMANow(3, titleScreenTiles, ((charblock *)0x6000000), 8608 / 2);
     DMANow(3, titleScreenMap, &((screenblock *)0x6000000)[31], 2048 / 2);
     state = START;
 }
@@ -457,6 +456,7 @@ void goToInstructions() {
 void instructions() {
     waitForVBlank();
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3)))) || (!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0))))) {
+        srand(time(0));
         initMap();
         goToMap();
     } else if ((!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1)))) || (!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
@@ -469,9 +469,10 @@ void goToMap() {
     clearAllOAM();
     initMapOAM();
     playSoundA(punch, 5069, 11025, 0);
-    DMANow(3, mapScreenPal, ((unsigned short *)0x5000000), 512 / 2);
-    DMANow(3, mapScreenTiles, ((charblock *)0x6000000), 256 / 2);
-    DMANow(3, mapScreenMap, &((screenblock *)0x6000000)[31], 2048 / 2);
+    DMANow(3, mapBackgroundPal, ((unsigned short *)0x5000000), 512 / 2);
+    DMANow(3, mapBackgroundTiles, ((charblock *)0x6000000), 8608 / 2);
+    DMANow(3, mapBackgroundMap, &((screenblock *)0x6000000)[28], 8192 / 2);
+    (*(volatile unsigned short*)0x4000008) = (3<<14) | (0<<7) | ((0)<<2) | ((28)<<8);
     state = MAP;
 }
 
@@ -483,19 +484,41 @@ void map() {
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
         stateBeforePause = MAP;
+        (*(volatile unsigned short*)0x4000008) = (3<<14) | (0<<7) | ((0)<<2) | ((31)<<8);
+        (*(volatile unsigned short *)0x04000010) = 0;
+        (*(volatile unsigned short *)0x04000012) = 0;
         goToPause();
     }
+
+    if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
+        printNum(20, 20, 999, 2);
+        if (cheatOn == 1) {
+            cheatOn = 0;
+        } else {
+            cheatOn = 1;
+        }
+    }
+
     switch(stateToGo) {
         case BATTLE:
             stateToGo = 0;
+            (*(volatile unsigned short*)0x4000008) = (3<<14) | (0<<7) | ((0)<<2) | ((31)<<8);
+            (*(volatile unsigned short *)0x04000010) = 0;
+            (*(volatile unsigned short *)0x04000012) = 0;
             goToBattle();
             break;
         case UNKNOWN_EVENT:
             stateToGo = 0;
+            (*(volatile unsigned short*)0x4000008) = (3<<14) | (0<<7) | ((0)<<2) | ((31)<<8);
+            (*(volatile unsigned short *)0x04000010) = 0;
+            (*(volatile unsigned short *)0x04000012) = 0;
             unknownEvent();
             break;
         case SHOP:
             stateToGo = 0;
+            (*(volatile unsigned short*)0x4000008) = (3<<14) | (0<<7) | ((0)<<2) | ((31)<<8);
+            (*(volatile unsigned short *)0x04000010) = 0;
+            (*(volatile unsigned short *)0x04000012) = 0;
             goToShop(1);
             break;
     }
@@ -505,7 +528,7 @@ void goToBattle() {
     clearAllOAM();
     initBattle();
     DMANow(3, battleScreenPal, ((unsigned short *)0x5000000), 512 / 2);
-    DMANow(3, battleScreenTiles, ((charblock *)0x6000000), 896 / 2);
+    DMANow(3, battleScreenTiles, ((charblock *)0x6000000), 4160 / 2);
     DMANow(3, battleScreenMap, &((screenblock *)0x6000000)[31], 2048 / 2);
     state = BATTLE;
 }
@@ -536,7 +559,7 @@ void goToShop(int init) {
     hideSprites();
     initShop(init);
     DMANow(3, eventScreenPal, ((unsigned short *)0x5000000), 512 / 2);
-    DMANow(3, eventScreenTiles, ((charblock *)0x6000000), 1216 / 2);
+    DMANow(3, eventScreenTiles, ((charblock *)0x6000000), 2368 / 2);
     DMANow(3, eventScreenMap, &((screenblock *)0x6000000)[31], 2048 / 2);
     state = SHOP;
 }
@@ -571,8 +594,10 @@ void unknownEvent() {
 void goToPause() {
     playSoundA(punch, 5069, 11025, 0);
     hideSprites();
+    printNum(7, 175, player.health, 0);
+    printNum(7, 215, player.coins, 0);
     DMANow(3, pauseScreenPal, ((unsigned short *)0x5000000), 512 / 2);
-    DMANow(3, pauseScreenTiles, ((charblock *)0x6000000), 416 / 2);
+    DMANow(3, pauseScreenTiles, ((charblock *)0x6000000), 3744 / 2);
     DMANow(3, pauseScreenMap, &((screenblock *)0x6000000)[31], 2048 / 2);
     state = PAUSE;
 }

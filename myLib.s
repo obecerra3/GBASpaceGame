@@ -738,19 +738,22 @@ printNum:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 16
 	@ frame_needed = 0, uses_anonymous_args = 0
-	mov	ip, r2
 	push	{r4, r5, r6, r7, r8, r9, r10, lr}
-	ldr	r4, .L140
+	subs	ip, r2, #0
 	sub	sp, sp, #16
-	mov	r5, r0
+	mov	r8, r0
 	mov	lr, r1
+	moveq	ip, #888
+	beq	.L124
+	ldrlt	ip, .L141
+.L124:
+	add	r6, sp, #4
+	mov	r5, r6
+	ldr	r4, .L141+4
 	ldm	r4, {r0, r1, r2}
-	add	r8, sp, #4
-	cmp	ip, #0
-	stm	r8, {r0, r1, r2}
-	ble	.L124
-	ldr	r10, .L140+4
-	ldr	r9, .L140+8
+	stm	r6, {r0, r1, r2}
+	ldr	r10, .L141+8
+	ldr	r9, .L141+12
 .L125:
 	smull	r6, r7, ip, r10
 	umull	r0, r1, ip, r9
@@ -759,63 +762,62 @@ printNum:
 	add	r2, r2, r2, lsl #2
 	sub	r2, ip, r2, lsl #1
 	lsrs	ip, r1, #3
-	str	r2, [r8], #4
+	str	r2, [r5], #4
 	bne	.L125
-.L124:
-	ldr	r1, .L140+12
-	ldr	r6, [sp, #12]
+	ldr	r1, .L141+16
+	ldr	r5, [sp, #12]
 	ldr	r2, [r1]
-	cmn	r6, #1
+	cmn	r5, #1
 	add	r4, r4, r2, lsl #2
 	ldr	r0, [r4, #12]
 	beq	.L126
-	ldr	r4, .L140+16
+	ldr	r4, .L141+20
 	sub	ip, r0, #2
 	lsl	ip, ip, #3
-	and	r8, r5, #255
-	strh	r8, [r4, ip]	@ movhi
-	lsl	r7, lr, #23
-	add	r8, r3, #24
+	and	r7, r8, #255
+	strh	r7, [r4, ip]	@ movhi
+	lsl	r6, lr, #23
+	add	r7, r3, #24
 	add	ip, r4, ip
-	lsr	r7, r7, #23
-	add	r6, r6, r8, lsl #5
-	strh	r7, [ip, #2]	@ movhi
-	strh	r6, [ip, #4]	@ movhi
+	lsr	r6, r6, #23
+	add	r5, r5, r7, lsl #5
+	strh	r6, [ip, #2]	@ movhi
+	strh	r5, [ip, #4]	@ movhi
 .L126:
-	ldr	r6, [sp, #8]
-	cmn	r6, #1
+	ldr	r5, [sp, #8]
+	cmn	r5, #1
 	beq	.L127
-	ldr	r7, .L140+16
+	ldr	r6, .L141+20
 	sub	r4, r0, #1
 	lsl	r4, r4, #3
-	and	r8, r5, #255
+	and	r7, r8, #255
 	add	ip, lr, #5
-	strh	r8, [r7, r4]	@ movhi
+	strh	r7, [r6, r4]	@ movhi
 	lsl	ip, ip, #23
-	add	r8, r3, #24
-	add	r4, r7, r4
+	add	r7, r3, #24
+	add	r4, r6, r4
 	lsr	ip, ip, #23
-	add	r6, r6, r8, lsl #5
+	add	r5, r5, r7, lsl #5
 	strh	ip, [r4, #2]	@ movhi
-	strh	r6, [r4, #4]	@ movhi
+	strh	r5, [r4, #4]	@ movhi
 .L127:
 	ldr	ip, [sp, #4]
 	cmn	ip, #1
 	beq	.L128
-	ldr	r6, .L140+16
+	ldr	r5, .L141+20
 	add	lr, lr, #10
 	lsl	r4, r0, #3
 	lsl	lr, lr, #23
 	add	r3, r3, #24
 	add	r3, ip, r3, lsl #5
 	lsr	lr, lr, #23
-	add	ip, r6, r4
-	and	r5, r5, #255
-	strh	r5, [r6, r4]	@ movhi
+	add	ip, r5, r4
+	and	r8, r8, #255
+	strh	r8, [r5, r4]	@ movhi
 	strh	lr, [ip, #2]	@ movhi
 	strh	r3, [ip, #4]	@ movhi
 .L128:
-	ldr	ip, .L140+4
+	ldr	ip, .L141+8
 	add	r3, r2, #1
 	smull	r4, r5, r3, ip
 	asr	r2, r3, #31
@@ -827,9 +829,10 @@ printNum:
 	@ sp needed
 	pop	{r4, r5, r6, r7, r8, r9, r10, lr}
 	bx	lr
-.L141:
+.L142:
 	.align	2
-.L140:
+.L141:
+	.word	999
 	.word	.LANCHOR1
 	.word	1717986919
 	.word	-858993459

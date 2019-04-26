@@ -18,21 +18,21 @@
 	.size	eventScreenPal, 512
 eventScreenPal:
 	.short	0
-	.short	14798
-	.short	26425
-	.short	5285
-	.short	7870
-	.short	9087
-	.short	10570
-	.short	21140
-	.short	1057
+	.short	25093
 	.short	32767
-	.short	10207
+	.short	7329
+	.short	7870
+	.short	19808
+	.short	14798
+	.short	5184
+	.short	9087
+	.short	21140
 	.short	7399
-	.short	2114
-	.short	12684
-	.short	8456
-	.short	16912
+	.short	11627
+	.short	3171
+	.short	10207
+	.short	18689
+	.short	24308
 	.short	0
 	.short	0
 	.short	0
@@ -288,100 +288,70 @@ eventScreenMap:
 	.short	0
 	.short	0
 	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
 	.short	1
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
 	.short	2
 	.short	3
+	.short	0
+	.short	0
 	.short	4
+	.short	0
+	.short	0
+	.short	0
 	.short	5
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	6
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	7
 	.short	8
 	.short	9
 	.short	10
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
 	.short	11
 	.short	12
 	.short	13
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
 	.short	14
 	.short	15
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	16
 	.short	17
 	.short	18
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	19
 	.short	20
+	.short	0
+	.short	0
 	.short	21
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
 	.short	22
 	.short	23
 	.short	24
@@ -389,6 +359,13 @@ eventScreenMap:
 	.short	26
 	.short	27
 	.short	28
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	29
 	.short	0
 	.short	0
@@ -402,159 +379,26 @@ eventScreenMap:
 	.short	0
 	.short	0
 	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
 	.short	30
+	.short	0
+	.short	0
 	.short	31
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
 	.short	32
 	.short	33
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	32
-	.short	33
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
 	.short	34
 	.short	35
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
 	.short	36
 	.short	37
+	.short	38
 	.short	0
 	.short	0
 	.short	0
+	.short	39
 	.short	0
 	.short	0
 	.short	0
-	.short	36
-	.short	37
 	.short	0
+	.short	40
 	.short	0
 	.short	0
 	.short	0
@@ -573,14 +417,17 @@ eventScreenMap:
 	.short	0
 	.short	0
 	.short	0
+	.short	3102
 	.short	0
 	.short	0
+	.short	41
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	42
 	.short	0
 	.short	0
 	.short	0
@@ -601,6 +448,8 @@ eventScreenMap:
 	.short	0
 	.short	0
 	.short	0
+	.short	43
+	.short	44
 	.short	0
 	.short	0
 	.short	0
@@ -609,6 +458,8 @@ eventScreenMap:
 	.short	0
 	.short	0
 	.short	0
+	.short	45
+	.short	46
 	.short	0
 	.short	0
 	.short	0
@@ -632,12 +483,14 @@ eventScreenMap:
 	.short	0
 	.short	0
 	.short	0
+	.short	5
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	47
 	.short	0
 	.short	0
 	.short	0
@@ -651,15 +504,24 @@ eventScreenMap:
 	.short	0
 	.short	0
 	.short	0
+	.short	48
+	.short	49
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	50
+	.short	51
 	.short	0
 	.short	0
 	.short	0
+	.short	52
+	.short	53
+	.short	54
+	.short	50
+	.short	51
 	.short	0
 	.short	0
 	.short	0
@@ -674,17 +536,24 @@ eventScreenMap:
 	.short	0
 	.short	0
 	.short	0
+	.short	55
+	.short	56
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	57
+	.short	58
+	.short	20
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	57
+	.short	58
 	.short	0
 	.short	0
 	.short	0
@@ -698,6 +567,7 @@ eventScreenMap:
 	.short	0
 	.short	0
 	.short	0
+	.short	59
 	.short	0
 	.short	0
 	.short	0
@@ -734,7 +604,9 @@ eventScreenMap:
 	.short	0
 	.short	0
 	.short	0
+	.short	42
 	.short	0
+	.short	60
 	.short	0
 	.short	0
 	.short	0
@@ -761,16 +633,22 @@ eventScreenMap:
 	.short	0
 	.short	0
 	.short	0
+	.short	61
+	.short	62
+	.short	63
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	64
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	65
+	.short	3115
 	.short	0
 	.short	0
 	.short	0
@@ -787,6 +665,9 @@ eventScreenMap:
 	.short	0
 	.short	0
 	.short	0
+	.short	66
+	.short	67
+	.short	68
 	.short	0
 	.short	0
 	.short	0
@@ -808,8 +689,10 @@ eventScreenMap:
 	.short	0
 	.short	0
 	.short	0
+	.short	69
 	.short	0
 	.short	0
+	.short	3112
 	.short	0
 	.short	0
 	.short	0
@@ -834,13 +717,16 @@ eventScreenMap:
 	.short	0
 	.short	0
 	.short	0
+	.short	70
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	3101
 	.short	0
+	.short	46
 	.short	0
 	.short	0
 	.short	0
@@ -876,6 +762,7 @@ eventScreenMap:
 	.short	0
 	.short	0
 	.short	0
+	.short	5
 	.short	0
 	.short	0
 	.short	0
@@ -898,6 +785,119 @@ eventScreenMap:
 	.short	0
 	.short	0
 	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	71
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	72
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	73
 	.short	0
 	.short	0
 	.short	0
@@ -1301,7 +1301,7 @@ eventScreenMap:
 	.short	0
 	.short	0
 	.type	eventScreenTiles, %object
-	.size	eventScreenTiles, 1216
+	.size	eventScreenTiles, 2368
 eventScreenTiles:
 	.short	0
 	.short	0
@@ -1329,164 +1329,433 @@ eventScreenTiles:
 	.short	0
 	.short	0
 	.short	0
-	.short	-22016
-	.short	170
-	.short	21920
-	.short	1365
-	.short	18778
-	.short	21828
+	.short	0
+	.short	30464
+	.short	0
+	.short	30464
+	.short	0
+	.short	30464
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
-	.short	-16384
 	.short	0
-	.short	-28672
 	.short	0
-	.short	-28672
 	.short	0
-	.short	-28672
 	.short	0
-	.short	-28672
 	.short	0
-	.short	-16384
-	.short	-26240
-	.short	-26215
-	.short	-26210
-	.short	-26215
-	.short	-5735
-	.short	-5120
-	.short	153
+	.short	7
+	.short	4096
+	.short	7
+	.short	4096
+	.short	7
+	.short	4096
 	.short	0
-	.short	153
 	.short	0
-	.short	153
 	.short	0
-	.short	921
 	.short	0
-	.short	-9831
 	.short	0
-	.short	201
-	.short	-32768
-	.short	137
-	.short	-16384
-	.short	13
-	.short	-16384
 	.short	0
-	.short	-16384
 	.short	0
-	.short	-16384
 	.short	0
-	.short	-16384
 	.short	0
-	.short	-16384
 	.short	0
-	.short	-16384
-	.short	921
+	.short	17
 	.short	0
-	.short	2969
+	.short	17
 	.short	0
-	.short	2969
+	.short	17
 	.short	0
-	.short	2969
 	.short	0
-	.short	2969
+	.short	4368
 	.short	0
-	.short	2969
+	.short	4368
 	.short	0
-	.short	2969
 	.short	0
-	.short	2969
 	.short	0
-	.short	14736
 	.short	0
-	.short	-5736
 	.short	0
-	.short	-5736
 	.short	0
-	.short	-5736
 	.short	0
-	.short	-5736
 	.short	0
-	.short	-5736
 	.short	0
-	.short	-5736
 	.short	0
-	.short	-5736
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	0
 	.short	-8192
-	.short	-26215
-	.short	-25344
-	.short	-26215
-	.short	-26160
-	.short	-20247
-	.short	-26336
+	.short	238
+	.short	-8192
+	.short	238
+	.short	-8192
+	.short	238
 	.short	0
-	.short	14742
 	.short	0
-	.short	2455
 	.short	0
-	.short	1945
 	.short	0
-	.short	409
 	.short	0
-	.short	105
 	.short	0
-	.short	409
 	.short	0
-	.short	6553
 	.short	0
-	.short	-26224
 	.short	0
-	.short	-26240
-	.short	13
-	.short	-26368
-	.short	9
-	.short	-28416
-	.short	9
-	.short	-27136
-	.short	137
-	.short	-27136
-	.short	-26215
-	.short	-28416
-	.short	-26215
-	.short	-28416
-	.short	-26215
-	.short	-28416
-	.short	9
-	.short	-28416
-	.short	9
-	.short	-28416
-	.short	9
-	.short	-28416
-	.short	9
-	.short	-28416
-	.short	9
-	.short	793
 	.short	0
-	.short	31129
+	.short	-8960
+	.short	221
+	.short	-30512
+	.short	2184
+	.short	17037
+	.short	-30652
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	-16384
+	.short	0
+	.short	8192
+	.short	0
+	.short	8192
+	.short	0
+	.short	8192
+	.short	0
+	.short	8192
+	.short	0
+	.short	-16384
+	.short	8704
+	.short	8738
+	.short	8746
+	.short	8738
+	.short	-24030
+	.short	-21504
+	.short	34
+	.short	0
+	.short	34
+	.short	0
+	.short	34
+	.short	0
+	.short	3106
+	.short	0
+	.short	25122
+	.short	0
+	.short	194
+	.short	0
+	.short	2
+	.short	-16384
+	.short	11
+	.short	-16384
+	.short	-8192
+	.short	-16146
+	.short	-8192
+	.short	-16146
+	.short	-8192
+	.short	-16146
+	.short	0
+	.short	-16384
+	.short	0
+	.short	-16384
+	.short	3106
+	.short	0
+	.short	2594
+	.short	0
+	.short	2594
+	.short	0
+	.short	2594
+	.short	0
+	.short	2594
+	.short	0
+	.short	2594
+	.short	0
+	.short	2594
+	.short	0
+	.short	2594
+	.short	0
+	.short	-15840
+	.short	0
+	.short	-24032
+	.short	0
+	.short	-24032
+	.short	0
+	.short	-24032
+	.short	0
+	.short	-24032
+	.short	0
+	.short	-24032
+	.short	0
+	.short	-24032
+	.short	0
+	.short	-24032
+	.short	0
+	.short	-24576
+	.short	8738
+	.short	11008
+	.short	8738
+	.short	8800
+	.short	-24414
+	.short	8736
+	.short	0
+	.short	-24021
+	.short	0
+	.short	559
+	.short	0
+	.short	1570
+	.short	0
+	.short	1570
+	.short	0
+	.short	178
+	.short	0
+	.short	1570
+	.short	0
+	.short	25122
+	.short	0
+	.short	8736
+	.short	0
+	.short	8704
+	.short	11
+	.short	8704
+	.short	2
+	.short	9728
+	.short	2
+	.short	11008
+	.short	2
+	.short	11008
+	.short	8738
+	.short	9728
+	.short	8738
+	.short	9728
+	.short	8738
+	.short	9728
+	.short	2
+	.short	9728
+	.short	2
+	.short	9728
+	.short	2
+	.short	9728
+	.short	2
+	.short	9728
+	.short	2
+	.short	3170
+	.short	0
+	.short	-28126
+	.short	0
+	.short	8738
+	.short	2
+	.short	10496
+	.short	178
+	.short	8192
+	.short	146
+	.short	8192
+	.short	242
+	.short	8192
+	.short	146
+	.short	11264
+	.short	98
+	.short	0
+	.short	-12288
+	.short	0
+	.short	-12288
+	.short	0
+	.short	-12288
+	.short	0
+	.short	-12288
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	8744
+	.short	-30499
+	.short	-11704
+	.short	-29372
+	.short	19784
+	.short	-29372
+	.short	19784
+	.short	-29372
+	.short	-10104
+	.short	-30499
+	.short	-30592
+	.short	2184
+	.short	-30720
+	.short	136
+	.short	0
+	.short	0
 	.short	8
-	.short	-26215
-	.short	9
-	.short	-26880
-	.short	217
-	.short	-28672
-	.short	121
-	.short	-28672
-	.short	41
-	.short	-28672
-	.short	121
-	.short	-25600
-	.short	25
 	.short	0
+	.short	8
+	.short	0
+	.short	8
+	.short	0
+	.short	8
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	-4384
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	4368
+	.short	0
+	.short	4368
+	.short	0
+	.short	4368
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	8746
+	.short	178
+	.short	8896
+	.short	-24030
+	.short	-16384
+	.short	8738
+	.short	0
+	.short	8896
+	.short	0
+	.short	8192
+	.short	0
+	.short	8192
+	.short	0
+	.short	0
+	.short	0
+	.short	-16384
+	.short	0
+	.short	-16384
+	.short	0
+	.short	-16384
+	.short	6
+	.short	-16384
+	.short	162
+	.short	-16384
+	.short	34
+	.short	-16384
+	.short	546
+	.short	-16384
+	.short	546
+	.short	-16384
+	.short	546
+	.short	-16384
+	.short	8738
+	.short	8738
+	.short	8738
+	.short	8738
+	.short	-23006
+	.short	-21846
+	.short	2594
+	.short	0
+	.short	2594
+	.short	0
+	.short	2594
+	.short	0
+	.short	2594
+	.short	0
+	.short	2594
+	.short	0
+	.short	-24030
+	.short	0
+	.short	-24030
+	.short	-16384
+	.short	-24022
 	.short	-24576
+	.short	-24032
+	.short	-16384
+	.short	-24032
 	.short	0
-	.short	-24576
+	.short	-24032
 	.short	0
-	.short	-24576
+	.short	-24032
 	.short	0
-	.short	-24576
+	.short	-24032
+	.short	0
+	.short	2850
+	.short	0
+	.short	2594
+	.short	0
+	.short	2594
+	.short	0
+	.short	2850
+	.short	0
+	.short	1570
+	.short	0
+	.short	1570
+	.short	0
+	.short	3874
+	.short	0
+	.short	-15838
+	.short	0
+	.short	10752
+	.short	194
+	.short	11264
+	.short	162
+	.short	11264
+	.short	178
+	.short	10752
+	.short	162
+	.short	11008
+	.short	194
+	.short	11008
+	.short	2
+	.short	10496
+	.short	2
+	.short	8704
+	.short	6
+	.short	9728
+	.short	2
+	.short	9728
+	.short	8738
+	.short	9728
+	.short	8738
+	.short	9728
+	.short	-13118
+	.short	9728
+	.short	2
+	.short	9728
+	.short	2
+	.short	9728
+	.short	2
+	.short	9728
+	.short	2
+	.short	8864
+	.short	2
+	.short	8738
+	.short	10
+	.short	-14046
 	.short	0
 	.short	0
 	.short	0
@@ -1495,29 +1764,6 @@ eventScreenTiles:
 	.short	0
 	.short	0
 	.short	0
-	.short	-26219
-	.short	21930
-	.short	-22203
-	.short	23108
-	.short	19013
-	.short	23108
-	.short	19013
-	.short	23108
-	.short	-23211
-	.short	21930
-	.short	21840
-	.short	1365
-	.short	21760
-	.short	85
-	.short	0
-	.short	0
-	.short	5
-	.short	0
-	.short	5
-	.short	0
-	.short	5
-	.short	0
-	.short	5
 	.short	0
 	.short	0
 	.short	0
@@ -1527,143 +1773,40 @@ eventScreenTiles:
 	.short	0
 	.short	0
 	.short	0
-	.short	-26210
-	.short	105
-	.short	-26176
-	.short	-5735
-	.short	12288
-	.short	-26215
 	.short	0
-	.short	-26320
 	.short	0
-	.short	-28672
 	.short	0
-	.short	-28672
 	.short	0
-	.short	-32768
 	.short	0
-	.short	12288
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	-4384
+	.short	-4384
+	.short	0
+	.short	-4384
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	0
 	.short	-16384
-	.short	0
-	.short	-16384
-	.short	1
-	.short	-16384
-	.short	233
-	.short	-16384
-	.short	153
-	.short	-16384
-	.short	2457
-	.short	-16384
-	.short	2457
-	.short	-16384
-	.short	2457
-	.short	-16384
-	.short	-26215
-	.short	-26215
-	.short	-26215
-	.short	-26215
-	.short	-4711
-	.short	-4370
-	.short	2969
-	.short	0
-	.short	2969
-	.short	0
-	.short	2969
-	.short	0
-	.short	2969
-	.short	0
-	.short	2969
-	.short	0
-	.short	-5735
-	.short	-32768
-	.short	-5735
-	.short	12288
-	.short	-5730
-	.short	12288
-	.short	-5736
-	.short	-16384
-	.short	-5736
-	.short	0
-	.short	-5736
-	.short	0
-	.short	-5736
-	.short	0
-	.short	-5736
-	.short	0
-	.short	1689
-	.short	0
-	.short	3737
-	.short	0
-	.short	3737
-	.short	0
-	.short	1689
-	.short	0
-	.short	3481
-	.short	0
-	.short	3993
-	.short	0
-	.short	665
-	.short	0
-	.short	-13927
-	.short	0
-	.short	-25088
-	.short	57
-	.short	-27904
-	.short	233
-	.short	-27904
-	.short	105
-	.short	-25856
-	.short	57
-	.short	-27136
-	.short	201
-	.short	-25344
-	.short	9
-	.short	-26880
-	.short	9
-	.short	-26368
-	.short	15
-	.short	-28416
-	.short	9
-	.short	-28416
-	.short	-26215
-	.short	-28416
-	.short	-26215
-	.short	-28416
-	.short	13113
-	.short	-28416
-	.short	9
-	.short	-28416
-	.short	9
-	.short	-28416
-	.short	9
-	.short	-28416
-	.short	9
-	.short	-26144
-	.short	137
-	.short	-26215
-	.short	14
-	.short	-14439
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	12288
-	.short	0
-	.short	-4096
 	.short	0
 	.short	24576
 	.short	0
+	.short	-20480
 	.short	0
 	.short	0
 	.short	0
@@ -1672,44 +1815,30 @@ eventScreenTiles:
 	.short	0
 	.short	0
 	.short	0
-	.short	-4096
-	.short	13
-	.short	-28416
-	.short	-26215
-	.short	-26215
-	.short	-26215
-	.short	-26215
-	.short	-8512
-	.short	206
+	.short	0
+	.short	24576
+	.short	11
+	.short	9728
+	.short	8738
+	.short	8738
+	.short	8738
+	.short	8738
+	.short	-17728
+	.short	202
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
-	.short	2457
+	.short	546
 	.short	-16384
-	.short	153
+	.short	34
 	.short	-16384
-	.short	9
-	.short	-16384
-	.short	0
+	.short	2
 	.short	-16384
 	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	2969
-	.short	0
-	.short	2969
-	.short	0
-	.short	2969
-	.short	0
-	.short	2969
+	.short	-16384
 	.short	0
 	.short	0
 	.short	0
@@ -1718,14 +1847,13 @@ eventScreenTiles:
 	.short	0
 	.short	0
 	.short	0
+	.short	2594
 	.short	0
-	.short	-5736
+	.short	2594
 	.short	0
-	.short	-5736
+	.short	2594
 	.short	0
-	.short	-5736
-	.short	0
-	.short	-5736
+	.short	2594
 	.short	0
 	.short	0
 	.short	0
@@ -1735,46 +1863,65 @@ eventScreenTiles:
 	.short	0
 	.short	0
 	.short	0
-	.short	-1640
+	.short	-24032
 	.short	0
-	.short	-26256
-	.short	9
-	.short	-26880
-	.short	-26215
-	.short	-28672
-	.short	-26215
+	.short	-24032
 	.short	0
-	.short	13872
+	.short	-24032
+	.short	0
+	.short	-24032
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
-	.short	-26224
+	.short	0
+	.short	0
+	.short	0
+	.short	25120
+	.short	0
+	.short	8848
+	.short	2
+	.short	12032
+	.short	8738
+	.short	8192
+	.short	8738
+	.short	0
+	.short	-13376
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	8736
 	.short	12
-	.short	31129
+	.short	-3550
 	.short	0
-	.short	-32103
+	.short	3874
+	.short	273
+	.short	146
+	.short	273
 	.short	0
-	.short	121
+	.short	273
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	9728
+	.short	2
+	.short	9728
+	.short	2
+	.short	9728
+	.short	2
+	.short	9728
+	.short	2
 	.short	0
 	.short	0
 	.short	0
-	.short	-28416
-	.short	9
-	.short	-28416
-	.short	9
-	.short	-28416
-	.short	9
-	.short	-28416
-	.short	9
 	.short	0
 	.short	0
 	.short	0
@@ -1784,6 +1931,12 @@ eventScreenTiles:
 	.short	0
 	.short	0
 	.short	0
+	.short	28672
+	.short	119
+	.short	28672
+	.short	119
+	.short	28672
+	.short	119
 	.short	0
 	.short	0
 	.short	0
@@ -1791,14 +1944,13 @@ eventScreenTiles:
 	.short	0
 	.short	0
 	.short	0
+	.short	-4384
 	.short	0
+	.short	-4384
 	.short	0
 	.short	0
-	.short	-24576
 	.short	0
-	.short	23040
 	.short	0
-	.short	-27232
 	.short	0
 	.short	0
 	.short	0
@@ -1807,30 +1959,18 @@ eventScreenTiles:
 	.short	0
 	.short	0
 	.short	0
-	.short	-21846
 	.short	0
-	.short	21845
-	.short	5
-	.short	17481
-	.short	85
-	.short	-21863
-	.short	1365
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	1911
 	.short	0
+	.short	1911
 	.short	0
-	.short	-24576
-	.short	2730
-	.short	23040
-	.short	21845
-	.short	-27232
-	.short	21572
-	.short	-26278
-	.short	23209
+	.short	1911
 	.short	0
 	.short	0
 	.short	0
@@ -1842,66 +1982,336 @@ eventScreenTiles:
 	.short	0
 	.short	0
 	.short	0
+	.short	-4384
 	.short	0
-	.short	5
+	.short	-4384
 	.short	0
-	.short	85
+	.short	-4384
 	.short	0
 	.short	0
-	.short	17824
 	.short	0
-	.short	17824
 	.short	0
-	.short	17824
 	.short	0
-	.short	21760
 	.short	0
-	.short	20480
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
-	.short	17577
-	.short	1370
-	.short	17482
-	.short	1370
-	.short	17482
-	.short	1370
-	.short	-21851
-	.short	85
-	.short	21845
-	.short	5
-	.short	21845
 	.short	0
+	.short	4352
 	.short	0
+	.short	4352
 	.short	0
+	.short	4352
 	.short	0
 	.short	0
-	.short	-27558
-	.short	-23478
-	.short	-23462
-	.short	-23484
-	.short	-23462
-	.short	-23484
+	.short	0
+	.short	3822
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	1
+	.short	0
+	.short	1
+	.short	0
+	.short	1
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	1911
+	.short	0
+	.short	0
+	.short	0
+	.short	-4384
+	.short	0
+	.short	-4384
+	.short	0
+	.short	-4384
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	1911
+	.short	0
+	.short	1911
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	-12288
+	.short	0
+	.short	-29440
+	.short	0
+	.short	10448
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	-8739
+	.short	0
+	.short	-30584
+	.short	8
+	.short	17474
+	.short	136
+	.short	-8926
+	.short	2184
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	-12288
+	.short	3549
+	.short	-29440
+	.short	-30584
+	.short	10448
+	.short	-31676
+	.short	8845
+	.short	-29230
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	8
+	.short	0
+	.short	136
+	.short	0
+	.short	0
+	.short	30576
+	.short	0
+	.short	30576
+	.short	0
+	.short	30576
+	.short	0
+	.short	-4384
+	.short	0
+	.short	-4384
+	.short	0
+	.short	-4384
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	30464
+	.short	0
+	.short	30464
+	.short	0
+	.short	30464
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	7
+	.short	0
+	.short	7
+	.short	0
+	.short	7
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	18640
+	.short	0
+	.short	18640
+	.short	0
+	.short	18640
+	.short	0
+	.short	-30720
+	.short	0
+	.short	-32768
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	17618
+	.short	2189
+	.short	17485
+	.short	2189
+	.short	17485
+	.short	2189
+	.short	-8744
+	.short	136
+	.short	-30584
+	.short	8
+	.short	-30584
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	9357
+	.short	-11187
+	.short	-11123
+	.short	-11196
+	.short	-11123
+	.short	-11196
+	.short	-30592
+	.short	-29219
+	.short	-30720
+	.short	-30584
+	.short	-32768
+	.short	2184
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	136
+	.short	0
+	.short	136
+	.short	0
+	.short	136
+	.short	0
+	.short	8
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	273
+	.short	0
+	.short	273
+	.short	0
+	.short	273
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3822
+	.short	0
+	.short	3822
+	.short	0
+	.short	3822
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	21840
-	.short	23210
-	.short	21760
-	.short	21845
+	.short	0
+	.short	0
 	.short	20480
-	.short	1365
-	.short	0
-	.short	0
-	.short	0
-	.short	0
 	.short	85
-	.short	0
+	.short	20480
 	.short	85
-	.short	0
+	.short	20480
 	.short	85
+	.short	4096
+	.short	17
+	.short	4096
+	.short	17
+	.short	4096
+	.short	17
+	.short	-3823
+	.short	4607
 	.short	0
-	.short	5
 	.short	0
 	.short	0
 	.short	0
@@ -1910,5 +2320,171 @@ eventScreenTiles:
 	.short	0
 	.short	0
 	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	21841
+	.short	0
+	.short	0
+	.short	0
+	.short	-4384
+	.short	0
+	.short	-4384
+	.short	0
+	.short	-4384
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	4096
+	.short	0
+	.short	4096
+	.short	0
+	.short	4096
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	21840
+	.short	0
+	.short	21840
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	-3823
+	.short	4607
+	.short	-3823
+	.short	4607
+	.short	4096
+	.short	17
+	.short	4096
+	.short	17
+	.short	4096
+	.short	17
+	.short	20480
+	.short	85
+	.short	20480
+	.short	85
+	.short	20480
+	.short	85
+	.short	21841
+	.short	0
+	.short	21841
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	30464
+	.short	7
+	.short	30464
+	.short	7
+	.short	30464
+	.short	7
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	819
+	.short	0
+	.short	819
+	.short	0
+	.short	819
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	4352
+	.short	1
+	.short	4352
+	.short	1
+	.short	4352
+	.short	1
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	30576
+	.short	0
+	.short	30576
+	.short	0
+	.short	30576
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	13104
+	.short	0
+	.short	13104
 	.short	0
 	.ident	"GCC: (devkitARM release 47) 7.1.0"

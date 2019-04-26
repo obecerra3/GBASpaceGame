@@ -59,7 +59,7 @@ Instructions
 #include "instructionScreen.h"
 #include "battleScreen.h"
 #include "eventScreen.h"
-#include "mapScreen.h"
+#include "mapBackground.h"
 #include "pauseScreen.h"
 #include "loseScreen.h"
 #include "winScreen.h"
@@ -159,8 +159,6 @@ void initialize() {
     hideSprites();
     waitForVBlank();
     DMANow(3, shadowOAM, OAM, 128 * 4);
-    srand(time(0));
-
     goToStart();
 }
 
@@ -195,6 +193,7 @@ void goToInstructions() {
 void instructions() {
     waitForVBlank();
     if (BUTTON_PRESSED(BUTTON_START) || BUTTON_PRESSED(BUTTON_A)) {
+        srand(time(0));
         initMap();
         goToMap();
     } else if (BUTTON_PRESSED(BUTTON_B) || BUTTON_PRESSED(BUTTON_SELECT)) {
@@ -207,9 +206,10 @@ void goToMap() {
     clearAllOAM();
     initMapOAM();
     playSoundA(punch, PUNCHLEN, PUNCHFREQ, 0);
-    DMANow(3, mapScreenPal, PALETTE, mapScreenPalLen / 2);
-    DMANow(3, mapScreenTiles, CHARBLOCK, mapScreenTilesLen / 2);
-    DMANow(3, mapScreenMap, &SCREENBLOCK[31], mapScreenMapLen / 2);
+    DMANow(3, mapBackgroundPal, PALETTE, mapBackgroundPalLen / 2);
+    DMANow(3, mapBackgroundTiles, CHARBLOCK, mapBackgroundTilesLen / 2);
+    DMANow(3, mapBackgroundMap, &SCREENBLOCK[28], mapBackgroundMapLen / 2);
+    REG_BG0CNT = BG_SIZE_LARGE | BG_4BPP | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
     state = MAP;
 }
 
@@ -221,19 +221,41 @@ void map() {
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
         stateBeforePause = MAP;
+        REG_BG0CNT = BG_SIZE_LARGE | BG_4BPP | BG_CHARBLOCK(0) | BG_SCREENBLOCK(31);
+        REG_BG0HOFF = 0;
+        REG_BG0VOFF = 0;
         goToPause();
     }
+
+    if (BUTTON_PRESSED(BUTTON_SELECT)) {
+        printNum(20, 20, 999, 2);
+        if (cheatOn == 1) {
+            cheatOn = 0;
+        } else {
+            cheatOn = 1;
+        }
+    }
+
     switch(stateToGo) {
         case BATTLE:
             stateToGo = 0;
+            REG_BG0CNT = BG_SIZE_LARGE | BG_4BPP | BG_CHARBLOCK(0) | BG_SCREENBLOCK(31);
+            REG_BG0HOFF = 0;
+            REG_BG0VOFF = 0;
             goToBattle();
             break;
         case UNKNOWN_EVENT:
             stateToGo = 0;
+            REG_BG0CNT = BG_SIZE_LARGE | BG_4BPP | BG_CHARBLOCK(0) | BG_SCREENBLOCK(31);
+            REG_BG0HOFF = 0;
+            REG_BG0VOFF = 0;
             unknownEvent();
             break;
         case SHOP:
             stateToGo = 0;
+            REG_BG0CNT = BG_SIZE_LARGE | BG_4BPP | BG_CHARBLOCK(0) | BG_SCREENBLOCK(31);
+            REG_BG0HOFF = 0;
+            REG_BG0VOFF = 0;
             goToShop(1);
             break;
     }
@@ -309,6 +331,8 @@ void unknownEvent() {
 void goToPause() {
     playSoundA(punch, PUNCHLEN, PUNCHFREQ, 0);
     hideSprites();
+    printNum(7, 175, player.health, 0);
+    printNum(7, 215, player.coins, 0);
     DMANow(3, pauseScreenPal, PALETTE, pauseScreenPalLen / 2);
     DMANow(3, pauseScreenTiles, CHARBLOCK, pauseScreenTilesLen / 2);
     DMANow(3, pauseScreenMap, &SCREENBLOCK[31], pauseScreenMapLen / 2);

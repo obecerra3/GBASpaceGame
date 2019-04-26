@@ -30,7 +30,7 @@ initMapOAM:
 	bx	r5
 	ldr	r4, .L6+8
 	str	r0, [r6, #32]
-	add	r6, r4, #800
+	add	r6, r4, #1152
 .L2:
 	mov	lr, pc
 	bx	r5
@@ -65,8 +65,8 @@ heal:
 	@ link register save eliminated.
 	ldr	r2, .L11
 	ldr	r3, [r2]
-	cmp	r3, #80
-	movgt	r3, #100
+	cmp	r3, #60
+	movgt	r3, #80
 	addle	r3, r3, #20
 	str	r3, [r2]
 	bx	lr
@@ -124,23 +124,23 @@ drawMap:
 	bx	ip
 	cmp	r0, #0
 	beq	.L14
+	ldr	r3, .L31+24
 	ldr	r1, [fp]
-	ldr	r3, [r4, #24]
-	ldr	ip, [r4, #28]
+	ldr	r0, [r4, #24]
+	ldr	lr, [r4, #28]
 	ldr	r2, [r8]
-	sub	r3, r3, r1
-	ldr	r0, .L31+24
-	and	r5, r5, r3
+	ldr	ip, [r3]
 	ldr	r3, [r4, #32]
-	ldr	r0, [r0]
-	sub	ip, ip, r2
+	sub	r0, r0, r1
+	sub	lr, lr, r2
 	lsl	r3, r3, #3
-	and	ip, ip, #255
-	strh	ip, [r10, r3]	@ movhi
-	orr	r5, r5, #16384
-	cmp	r0, #26
-	add	ip, r10, r3
-	strh	r5, [ip, #2]	@ movhi
+	and	lr, lr, #255
+	and	r0, r0, r5
+	orr	r0, r0, #16384
+	strh	lr, [r10, r3]	@ movhi
+	cmp	ip, #26
+	add	lr, r10, r3
+	strh	r0, [lr, #2]	@ movhi
 	movle	r0, #576
 	bgt	.L29
 .L15:
@@ -263,7 +263,7 @@ drawMap:
 	ldr	r2, [r8]
 	b	.L16
 .L29:
-	cmp	r0, #53
+	cmp	ip, #53
 	movgt	r0, #704
 	movle	r0, #640
 	b	.L15
@@ -279,7 +279,7 @@ drawMap:
 	.word	frame
 	.word	bossNode
 	.word	.LANCHOR0
-	.word	.LANCHOR0+800
+	.word	.LANCHOR0+1152
 	.size	drawMap, .-drawMap
 	.global	__aeabi_i2d
 	.global	__aeabi_dmul
@@ -362,7 +362,7 @@ checkMap:
 	ldr	r4, .L47
 	sub	sp, sp, #32
 	ldr	r9, .L47+4
-	add	r10, r4, #800
+	add	r10, r4, #1152
 	b	.L40
 .L46:
 	cmp	r8, #0
@@ -398,7 +398,7 @@ checkMap:
 	ldr	r8, [r4, #16]
 	ldr	r5, [r4, #20]
 	bl	distanceBetween
-	cmp	r0, #100
+	cmp	r0, #150
 	ble	.L46
 	cmp	r8, #0
 	moveq	r5, #0
@@ -449,8 +449,31 @@ initMap:
 	ldr	r5, .L58+24
 	ldr	r7, .L58+28
 .L50:
-	mov	r4, #0
 	ldr	r9, [sp, #4]
+	mov	r4, #0
+	b	.L53
+.L51:
+	mov	lr, pc
+	bx	r5
+	cmp	r0, #0
+	and	r0, r0, #1
+	rsblt	r0, r0, #0
+	add	r0, r0, #2
+.L52:
+	mov	r2, #16
+	add	r4, r4, #90
+	add	r3, r0, #1
+	lsl	r3, r3, #1
+	cmp	r4, #540
+	str	fp, [r9]
+	str	r10, [r9, #4]
+	str	r2, [r9, #8]
+	str	r6, [r9, #16]
+	str	r6, [r9, #20]
+	str	r0, [r9, #24]
+	str	r3, [r9, #12]
+	add	r9, r9, #32
+	beq	.L57
 .L53:
 	mov	lr, pc
 	bx	r5
@@ -477,51 +500,38 @@ initMap:
 	rsbpl	r0, r3, #0
 	cmp	r0, #1
 	add	r10, r10, r4
-	ble	.L57
+	bgt	.L51
 	mov	lr, pc
 	bx	r5
 	cmp	r0, #0
 	and	r0, r0, #1
 	rsblt	r0, r0, #0
-	add	r0, r0, #2
-.L52:
-	mov	r2, #16
-	add	r4, r4, #64
-	add	r3, r0, #1
-	lsl	r3, r3, #1
-	cmp	r4, #320
-	str	fp, [r9]
-	str	r10, [r9, #4]
-	str	r2, [r9, #8]
-	str	r6, [r9, #16]
-	str	r6, [r9, #20]
-	str	r0, [r9, #24]
-	str	r3, [r9, #12]
-	add	r9, r9, #32
-	bne	.L53
+	b	.L52
+.L57:
 	ldr	r3, [sp]
-	add	r3, r3, #64
+	add	r3, r3, #90
 	str	r3, [sp]
-	cmp	r3, #320
+	cmp	r3, #540
 	ldr	r3, [sp, #4]
-	add	r3, r3, #160
+	add	r3, r3, #192
 	str	r3, [sp, #4]
 	bne	.L50
-	mov	r3, #300
+	mov	ip, #400
 	mov	r0, #20
 	mov	r1, #2
 	mov	r2, #3
+	ldr	r3, .L58+32
 	str	r6, [sp, #24]
+	str	ip, [sp, #8]
 	str	r2, [sp, #32]
 	str	r6, [sp, #28]
 	str	r6, [sp, #36]
-	str	r3, [sp, #8]
-	str	r3, [sp, #12]
 	str	r0, [sp, #16]
 	str	r1, [sp, #20]
+	str	r3, [sp, #12]
 	add	lr, sp, #8
 	ldmia	lr!, {r0, r1, r2, r3}
-	ldr	ip, .L58+32
+	ldr	ip, .L58+36
 	stmia	ip!, {r0, r1, r2, r3}
 	ldm	lr, {r0, r1, r2, r3}
 	stm	ip, {r0, r1, r2, r3}
@@ -529,13 +539,6 @@ initMap:
 	@ sp needed
 	pop	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
 	b	checkMap
-.L57:
-	mov	lr, pc
-	bx	r5
-	cmp	r0, #0
-	and	r0, r0, #1
-	rsblt	r0, r0, #0
-	b	.L52
 .L59:
 	.align	2
 .L58:
@@ -547,6 +550,7 @@ initMap:
 	.word	.LANCHOR0
 	.word	rand
 	.word	1717986919
+	.word	430
 	.word	bossNode
 	.size	initMap, .-initMap
 	.align	2
@@ -560,23 +564,23 @@ checkMapSelector:
 	@ args = 0, pretend = 0, frame = 40
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
-	ldr	r9, .L77
+	ldr	r9, .L80
 	ldr	r3, [r9, #44]
 	sub	sp, sp, #60
 	str	r3, [sp, #20]
-	ldr	r3, .L77+4
-	ldr	r4, .L77+8
+	ldr	r3, .L80+4
+	ldr	r4, .L80+8
 	ldr	lr, [r3]
-	ldr	r3, .L77+12
+	ldr	r3, .L80+12
 	ldr	fp, [r9, #48]
 	ldr	r6, [r3]
-	add	r7, r4, #800
-	b	.L65
+	add	r7, r4, #1152
+	b	.L66
 .L61:
 	add	r4, r4, #32
 	cmp	r7, r4
-	beq	.L76
-.L65:
+	beq	.L77
+.L66:
 	mov	r8, r4
 	ldr	r5, [r4, #20]
 	ldr	r3, [r4, #16]
@@ -606,26 +610,26 @@ checkMapSelector:
 	mov	r2, r3
 	mov	r1, fp
 	ldr	r0, [sp, #20]
-	ldr	ip, .L77+16
+	ldr	ip, .L80+16
 	ldr	r6, [r4, #24]
 	mov	lr, pc
 	bx	ip
 	cmp	r0, #0
 	bne	.L62
-.L75:
+.L76:
 	ldr	r3, [r9, #44]
 	str	r3, [sp, #20]
-	ldr	r3, .L77+4
+	ldr	r3, .L80+4
 	add	r4, r4, #32
 	ldr	lr, [r3]
-	ldr	r3, .L77+12
+	ldr	r3, .L80+12
 	cmp	r7, r4
 	ldr	fp, [r9, #48]
 	ldr	r6, [r3]
-	bne	.L65
-.L76:
+	bne	.L66
+.L77:
 	mov	r3, #16
-	ldr	r4, .L77+20
+	ldr	r4, .L80+20
 	ldr	r2, [r4, #4]
 	sub	r6, r2, r6
 	ldr	r2, [r4]
@@ -640,20 +644,11 @@ checkMapSelector:
 	str	r3, [sp, #12]
 	str	r3, [sp, #8]
 	mov	r2, r3
-	ldr	ip, .L77+16
+	ldr	ip, .L80+16
 	mov	lr, pc
 	bx	ip
 	cmp	r0, #0
-	beq	.L60
-	mov	r2, #1
-	mov	r0, #3
-	ldr	r3, .L77+24
-	ldr	r1, .L77+28
-	str	r2, [r3]
-	ldm	r4, {r2, r3}
-	str	r0, [r1]
-	str	r2, [r9, #28]
-	str	r3, [r9, #24]
+	bne	.L78
 .L60:
 	add	sp, sp, #60
 	@ sp needed
@@ -663,17 +658,12 @@ checkMapSelector:
 	str	r10, [r9, #28]
 	str	r8, [r9, #24]
 	bl	checkMap
-	ldr	r2, .L77+28
-	add	r3, r6, #3
 	cmp	r6, #3
+	beq	.L79
+	ldr	r2, .L80+24
+	add	r3, r6, #3
 	str	r3, [r2]
-	bne	.L63
-	ldr	r3, [r9]
-	cmp	r3, #80
-	movgt	r3, #100
-	addle	r3, r3, #20
-	str	r3, [r9]
-.L63:
+.L65:
 	mov	r3, #1
 	mov	ip, r4
 	str	r5, [sp, #44]
@@ -685,18 +675,45 @@ checkMapSelector:
 	stmia	ip!, {r0, r1, r2, r3}
 	ldm	lr, {r0, r1, r2, r3}
 	stm	ip, {r0, r1, r2, r3}
-	b	.L75
+	b	.L76
+.L79:
+	ldr	r3, [r9]
+	cmp	r3, #60
+	add	r3, r3, #20
+	movgt	r3, #80
+	str	r3, [r9]
+	b	.L65
 .L78:
+	ldm	r4, {r2, r3}
+	ldr	r1, [r9, #24]
+	ldr	r0, [r9, #28]
+	bl	distanceBetween
+	cmp	r0, #150
+	bgt	.L60
+	mov	r2, #1
+	mov	r0, #3
+	ldr	r3, .L80+28
+	ldr	r1, .L80+24
+	str	r2, [r3]
+	ldm	r4, {r2, r3}
+	str	r0, [r1]
+	str	r2, [r9, #28]
+	str	r3, [r9, #24]
+	add	sp, sp, #60
+	@ sp needed
+	pop	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+	bx	lr
+.L81:
 	.align	2
-.L77:
+.L80:
 	.word	player
 	.word	mapRow
 	.word	.LANCHOR0
 	.word	mapCol
 	.word	collision
 	.word	bossNode
-	.word	bossBattle
 	.word	stateToGo
+	.word	bossBattle
 	.size	checkMapSelector, .-checkMapSelector
 	.align	2
 	.global	updateMap
@@ -708,12 +725,12 @@ updateMap:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	ldr	r3, .L107
+	ldr	r3, .L114
 	ldrh	r3, [r3, #48]
 	tst	r3, #16
 	push	{r4, lr}
-	bne	.L81
-	ldr	r2, .L107+4
+	bne	.L110
+	ldr	r2, .L114+4
 	ldr	r1, [r2, #36]
 	ldr	r3, [r2, #48]
 	rsb	r1, r1, #238
@@ -722,41 +739,43 @@ updateMap:
 	addlt	r3, r3, r1
 	strlt	r3, [r2, #48]
 	cmp	r3, #210
-	bgt	.L104
-.L81:
-	ldr	r3, .L107
+	bgt	.L107
+.L110:
+	ldr	r4, .L114+8
+.L84:
+	ldr	r3, .L114
 	ldrh	r3, [r3, #48]
 	tst	r3, #32
-	bne	.L85
-	ldr	r2, .L107+4
+	bne	.L88
+	ldr	r2, .L114+4
 	ldr	r3, [r2, #48]
 	cmp	r3, #4
-	ble	.L86
+	ble	.L89
 	ldr	r1, [r2, #56]
 	sub	r3, r3, r1
 	cmp	r3, #29
 	str	r3, [r2, #48]
-	ble	.L86
-.L85:
-	ldr	r3, .L107
+	ble	.L89
+.L88:
+	ldr	r3, .L114
 	ldrh	r3, [r3, #48]
 	tst	r3, #64
-	bne	.L89
-	ldr	r2, .L107+4
+	bne	.L92
+	ldr	r2, .L114+4
 	ldr	r3, [r2, #44]
 	cmp	r3, #2
-	ble	.L90
+	ble	.L93
 	ldr	r1, [r2, #52]
 	sub	r3, r3, r1
 	cmp	r3, #29
 	str	r3, [r2, #44]
-	ble	.L90
-.L89:
-	ldr	r3, .L107
+	ble	.L93
+.L92:
+	ldr	r3, .L114
 	ldrh	r3, [r3, #48]
 	tst	r3, #128
-	bne	.L93
-	ldr	r2, .L107+4
+	bne	.L96
+	ldr	r2, .L114+4
 	add	r1, r2, #40
 	ldm	r1, {r1, r3}
 	rsb	r1, r1, #158
@@ -765,65 +784,90 @@ updateMap:
 	addlt	r3, r3, r1
 	strlt	r3, [r2, #44]
 	cmp	r3, #130
-	bgt	.L105
-.L93:
-	ldr	r3, .L107+8
-	ldrh	r3, [r3]
-	tst	r3, #1
-	beq	.L96
-	ldr	r3, .L107+12
-	ldrh	r3, [r3]
-	tst	r3, #1
-	beq	.L106
+	bgt	.L112
 .L96:
-	ldr	r2, .L107+16
+	ldr	r3, .L114+12
+	ldrh	r3, [r3]
+	tst	r3, #1
+	beq	.L99
+	ldr	r3, .L114+16
+	ldrh	r3, [r3]
+	tst	r3, #1
+	beq	.L113
+.L99:
+	ldr	r2, .L114+20
 	ldr	r3, [r2]
 	add	r3, r3, #1
 	cmp	r3, #81
 	movgt	r3, #0
-	pop	{r4, lr}
+	mov	r1, #67108864
 	str	r3, [r2]
+	add	r2, r4, #1152
+	ldm	r2, {r2, r3}
+	lsl	r2, r2, #16
+	lsl	r3, r3, #16
+	lsr	r2, r2, #16
+	lsr	r3, r3, #16
+	strh	r2, [r1, #16]	@ movhi
+	pop	{r4, lr}
+	strh	r3, [r1, #18]	@ movhi
 	bx	lr
-.L105:
-	ldr	r2, .L107+20
+.L112:
+	ldr	r2, .L114+24
+	ldr	r1, .L114+28
 	ldr	r3, [r2]
-	cmp	r3, #179
+	cmp	r3, r1
+	ldrle	r1, [r4, #1156]
 	addle	r3, r3, #3
+	addle	r1, r1, #1
 	strle	r3, [r2]
-	b	.L93
-.L90:
-	ldr	r2, .L107+20
+	strle	r1, [r4, #1156]
+	b	.L96
+.L93:
+	ldr	r2, .L114+24
 	ldr	r3, [r2]
 	cmn	r3, #39
+	ldrge	r1, [r4, #1156]
 	subge	r3, r3, #3
+	subge	r1, r1, #1
 	strge	r3, [r2]
-	b	.L89
-.L86:
-	ldr	r2, .L107+24
+	strge	r1, [r4, #1156]
+	b	.L92
+.L89:
+	ldr	r2, .L114+32
 	ldr	r3, [r2]
 	cmn	r3, #29
+	ldrge	r1, [r4, #1152]
 	subge	r3, r3, #3
+	subge	r1, r1, #1
 	strge	r3, [r2]
-	b	.L85
-.L104:
-	ldr	r2, .L107+24
-	ldr	r3, [r2]
-	cmp	r3, #109
-	addle	r3, r3, #3
-	strle	r3, [r2]
-	b	.L81
-.L106:
-	bl	checkMapSelector
-	b	.L96
-.L108:
-	.align	2
+	strge	r1, [r4, #1152]
+	b	.L88
 .L107:
+	ldr	r2, .L114+32
+	ldr	r3, [r2]
+	ldr	r4, .L114+8
+	cmp	r3, #280
+	ldrlt	r1, [r4, #1152]
+	addlt	r3, r3, #3
+	addlt	r1, r1, #1
+	strlt	r3, [r2]
+	strlt	r1, [r4, #1152]
+	b	.L84
+.L113:
+	bl	checkMapSelector
+	b	.L99
+.L115:
+	.align	2
+.L114:
 	.word	67109120
 	.word	player
+	.word	.LANCHOR0
 	.word	oldButtons
 	.word	buttons
 	.word	frame
 	.word	mapRow
+	.word	289
 	.word	mapCol
 	.size	updateMap, .-updateMap
 	.align	2
@@ -837,22 +881,24 @@ getShipFrame:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	ldr	r3, .L113
+	ldr	r3, .L120
 	ldr	r3, [r3]
 	cmp	r3, #26
-	ble	.L111
+	ble	.L118
 	cmp	r3, #54
 	movlt	r0, #20
 	movge	r0, #22
 	bx	lr
-.L111:
+.L118:
 	mov	r0, #18
 	bx	lr
-.L114:
+.L121:
 	.align	2
-.L113:
+.L120:
 	.word	frame
 	.size	getShipFrame, .-getShipFrame
+	.global	vOff
+	.global	hOff
 	.comm	frame,4,4
 	.comm	bossNode,32,4
 	.comm	mapCol,4,4
@@ -862,7 +908,15 @@ getShipFrame:
 	.align	2
 	.set	.LANCHOR0,. + 0
 	.type	map, %object
-	.size	map, 800
+	.size	map, 1152
 map:
-	.space	800
+	.space	1152
+	.type	hOff, %object
+	.size	hOff, 4
+hOff:
+	.space	4
+	.type	vOff, %object
+	.size	vOff, 4
+vOff:
+	.space	4
 	.ident	"GCC: (devkitARM release 47) 7.1.0"

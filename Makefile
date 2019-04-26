@@ -1,5 +1,5 @@
 PRODUCT_NAME       = SpaceGame
-SOURCES            = main.c sound.c battle.c map.c shop.c myLib.c eventScreen.c battleScreen.c instructionScreen.c titleScreen.c winScreen.c loseScreen.c mapScreen.c pauseScreen.c cards.c punch.c humanMusic.c list.c
+SOURCES            = main.c sound.c battle.c map.c shop.c myLib.c eventScreen.c battleScreen.c instructionScreen.c titleScreen.c winScreen.c loseScreen.c mapBackground.c pauseScreen.c cards.c punch.c humanMusic.c list.c
 CCPATH             = /usr/bin
 DKPATH             = ../devkitARM/bin
 VBASIM             = open ../../../../../Applications/visualboyadvance-m.app

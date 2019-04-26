@@ -17,3 +17,4 @@ extern int masterDeck[10][12];
 extern int gameOver;
 extern int gameWon;
 extern int bossBattle;
+extern int cheatOn;

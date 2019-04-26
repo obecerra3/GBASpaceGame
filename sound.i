@@ -55,7 +55,7 @@ typedef struct {
     int shipRow;
     int shipOAMIndex;
     Box selector;
-    Card deck[20];
+    Card deck[40];
 } Player;
 
 typedef struct {

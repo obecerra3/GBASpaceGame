@@ -1244,7 +1244,7 @@ typedef struct {
     int shipRow;
     int shipOAMIndex;
     Box selector;
-    Card deck[20];
+    Card deck[40];
 } Player;
 
 typedef struct {
@@ -1380,6 +1380,7 @@ extern int masterDeck[10][12];
 extern int gameOver;
 extern int gameWon;
 extern int bossBattle;
+extern int cheatOn;
 # 5 "map.c" 2
 # 1 "map.h" 1
 
@@ -1688,7 +1689,7 @@ extern long double erfcl (long double);
 int stateToGo;
 
 
-static MapNode map[25];
+static MapNode map[36];
 
 int mapRow;
 int mapCol;
@@ -1696,6 +1697,9 @@ int mapCol;
 MapNode bossNode;
 
 int frame;
+
+int hOff = 0;
+int vOff = 0;
 
 void initMap() {
 
@@ -1713,12 +1717,12 @@ void initMap() {
     int MAP_COL = 0;
     int rowOffset;
     int colOffset;
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0;j < 5; j++) {
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0;j < 6; j++) {
             rowOffset = rand() % 40;
             colOffset = rand() % 40;
-            mapNode.worldRow = MAP_ROW + (i*64) + rowOffset;
-            mapNode.worldCol = MAP_COL + (j*64) + colOffset;
+            mapNode.worldRow = MAP_ROW + (i*90) + rowOffset;
+            mapNode.worldCol = MAP_COL + (j*90) + colOffset;
             if (rand() % 4 < 2) {
                 mapNode.type = rand() % 2;
             } else {
@@ -1732,7 +1736,7 @@ void initMap() {
             count++;
         }
     }
-    MapNode newNode = {.worldRow = 300, .worldCol = 300, .type = 3, .sheetRow = 20, .sheetCol = 2};
+    MapNode newNode = {.worldRow = 400, .worldCol = 430, .type = 3, .sheetRow = 20, .sheetCol = 2};
     bossNode = newNode;
     checkMap();
 }
@@ -1740,7 +1744,7 @@ void initMap() {
 void initMapOAM() {
     player.selector.oamIndex = getOAMIndex();
     player.shipOAMIndex = getOAMIndex();
-    for (int i = 0; i < 25; i++) {
+    for (int i = 0; i < 36; i++) {
         map[i].oamIndex = getOAMIndex();
     }
     bossNode.oamIndex = getOAMIndex();
@@ -1748,9 +1752,9 @@ void initMapOAM() {
 
 void checkMap() {
     MapNode node;
-    for (int i = 0; i < 25; i++) {
+    for (int i = 0; i < 36; i++) {
         node = map[i];
-        if (distanceBetween(player.shipRow, player.shipCol, node.worldRow, node.worldCol) <= 100 && !node.visited) {
+        if (distanceBetween(player.shipRow, player.shipCol, node.worldRow, node.worldCol) <= 150 && !node.visited) {
             node.sheetRow = 18;
             node.inRange = 1;
         } else if (!node.visited) {
@@ -1770,8 +1774,9 @@ void updateMap() {
         if (player.selector.screenCol < 238 - player.selector.width) {
             player.selector.screenCol += player.selector.dCol;
         }
-        if (player.selector.screenCol > 210 && mapCol < 240 -130) {
+        if (player.selector.screenCol > 210 && mapCol < 240 +40) {
             mapCol+=3;
+            hOff++;
         }
     }
     if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<5)))) {
@@ -1780,6 +1785,7 @@ void updateMap() {
         }
         if (player.selector.screenCol < 30 && mapCol > -30) {
             mapCol-=3;
+            hOff--;
         }
     }
     if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<6)))) {
@@ -1788,14 +1794,16 @@ void updateMap() {
         }
         if (player.selector.screenRow < 30 && mapRow > -40) {
             mapRow-=3;
+            vOff--;
         }
     }
     if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<7)))) {
         if (player.selector.screenRow < 158 - player.selector.height) {
             player.selector.screenRow += player.selector.dRow;
         }
-        if (player.selector.screenRow > 130 && mapRow < 160 +20) {
+        if (player.selector.screenRow > 130 && mapRow < 160 +130) {
             mapRow+=3;
+            vOff++;
         }
     }
 
@@ -1807,11 +1815,14 @@ void updateMap() {
     if (frame > 81) {
         frame = 0;
     }
+
+    (*(volatile unsigned short *)0x04000010) = hOff;
+    (*(volatile unsigned short *)0x04000012) = vOff;
 }
 
 void checkMapSelector() {
     MapNode node;
-    for (int i = 0; i < 25; i++) {
+    for (int i = 0; i < 36; i++) {
         node = map[i];
         if (node.inRange && !node.visited && collision(player.selector.screenRow,
             player.selector.screenCol, 16, 16, (node.worldRow - mapRow) & 0xFF,
@@ -1820,16 +1831,18 @@ void checkMapSelector() {
             player.shipRow = node.worldRow;
             player.shipCol = node.worldCol;
             checkMap();
-            stateToGo = node.type + 3;
             if (node.type == 3) {
                 heal();
+            } else {
+                stateToGo = node.type + 3;
             }
             map[i] = node;
         }
     }
 
     if (collision(player.selector.screenRow, player.selector.screenCol, 16, 16,
-        (bossNode.worldRow - mapRow) & 0xFF, (bossNode.worldCol - mapCol) & 0x1FF, 16, 16)) {
+        (bossNode.worldRow - mapRow) & 0xFF, (bossNode.worldCol - mapCol) & 0x1FF, 16, 16)
+        && distanceBetween(player.shipRow, player.shipCol, bossNode.worldRow, bossNode.worldCol) <= 150) {
             player.shipRow = bossNode.worldRow;
             player.shipCol = bossNode.worldCol;
             bossBattle = 1;
@@ -1838,16 +1851,14 @@ void checkMapSelector() {
 }
 
 void heal() {
-    if (player.health + 20 > 100) {
-        player.health = 100;
-    } else {
+    if (player.health <= 60) {
         player.health += 20;
+    } else {
+        player.health = 80;
     }
 }
 
 void drawMap() {
-
-
 
     shadowOAM[player.selector.oamIndex].attr0 = (player.selector.screenRow & 0xFF) | (0<<8) | (0<<14) | (0<<13);
     shadowOAM[player.selector.oamIndex].attr1 = (player.selector.screenCol & 0x1FF) | (1<<14);
@@ -1863,7 +1874,6 @@ void drawMap() {
     }
 
 
-
     if (collision(bossNode.worldRow, bossNode.worldCol, 16, 16, mapRow - 15, mapCol - 15, 160 + 15, 240 + 15)) {
         shadowOAM[bossNode.oamIndex].attr0 = ((bossNode.worldRow - mapRow) & 0xFF) | (0<<8) | (0<<14) | (0<<13);
         shadowOAM[bossNode.oamIndex].attr1 = ((bossNode.worldCol - mapCol) & 0x1FF) | (1<<14);
@@ -1873,7 +1883,7 @@ void drawMap() {
     }
 
     MapNode node;
-    for (int i = 0; i < 25; i++) {
+    for (int i = 0; i < 36; i++) {
         node = map[i];
 
         if (!node.visited && collision (node.worldRow, node.worldCol, 16, 16, mapRow - 15, mapCol - 15, 160 + 15, 240 + 15)) {

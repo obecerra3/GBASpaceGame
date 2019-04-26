@@ -146,7 +146,7 @@ initShop:
 	bx	r4
 	mov	r3, #16
 	mov	lr, #140
-	mov	ip, #200
+	mov	ip, #215
 	mov	r1, #22
 	mov	r2, #6
 	str	r0, [sp, #36]
@@ -255,14 +255,14 @@ checkShopSelector:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, r5, r6, r7, r8, r9, r10, lr}
+	push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
 	mov	r5, #0
 	ldr	r8, .L37
 	ldr	r4, .L37+4
 	ldr	r7, .L37+8
 	ldr	r6, .L37+12
 	ldr	r9, .L37+16
-	sub	sp, sp, #16
+	sub	sp, sp, #20
 	add	r10, r8, #12
 .L26:
 	mov	r1, #39
@@ -272,23 +272,26 @@ checkShopSelector:
 	add	r2, r2, #12
 	str	r2, [sp, #4]
 	str	r1, [sp, #12]
-	ldr	r2, [r4, #40]
 	str	r0, [sp, #8]
 	ldr	r3, [r4, #36]
+	ldr	r2, [r4, #40]
 	ldr	r1, [r4, #48]
 	ldr	r0, [r4, #44]
 	str	ip, [sp]
 	mov	lr, pc
 	bx	r6
 	cmp	r0, #0
-	lsl	r2, r5, #2
+	lsl	fp, r5, #2
 	beq	.L25
 	ldr	r3, [r8, r5, lsl #2]
 	add	r3, r3, r3, lsl #1
 	add	r3, r9, r3, lsl #4
-	ldr	r1, [r3, #44]
+	ldr	r2, [r3, #44]
 	ldr	r3, [r4, #4]
-	cmp	r1, r3
+	cmp	r2, r3
+	bgt	.L25
+	ldr	r1, [r4, #16]
+	cmp	r1, #39
 	ble	.L36
 .L25:
 	add	r5, r5, #1
@@ -312,16 +315,26 @@ checkShopSelector:
 	movne	r2, #1
 	ldrne	r3, .L37+24
 	strne	r2, [r3]
-	add	sp, sp, #16
+	add	sp, sp, #20
 	@ sp needed
-	pop	{r4, r5, r6, r7, r8, r9, r10, lr}
+	pop	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
 	bx	lr
 .L36:
-	mov	r0, #1
-	sub	r3, r3, r1
-	str	r0, [r2, r10]
+	mov	r1, #1
+	sub	r3, r3, r2
+	str	r1, [fp, r10]
 	str	r3, [r4, #4]
 	bl	drawShopCards
+	mov	r0, #0
+	ldr	r3, [r4, #16]
+	ldr	r1, [fp, r8]
+	add	r3, r3, #9
+	add	r2, r4, r3, lsl #3
+	str	r0, [r4, r3, lsl #3]
+	str	r1, [r2, #4]
+	ldr	r3, [r4, #16]
+	add	r3, r3, #1
+	str	r3, [r4, #16]
 	b	.L25
 .L38:
 	.align	2
