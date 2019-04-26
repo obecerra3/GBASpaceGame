@@ -1598,6 +1598,12 @@ void updateBattle() {
             checkSelector();
         }
 
+        if ((!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
+            battleState = ENEMYTURN;
+            player.actionPoints = 3;
+            newHand();
+        }
+
         if (player.actionPoints == 0 || cardsRemaining == 0) {
             battleState = ENEMYTURN;
             player.actionPoints = 3;
@@ -1608,7 +1614,7 @@ void updateBattle() {
     if (battleState == ENEMYTURN) {
         int damage = 20;
         if (bossBattle == 1) {
-            damage += 10;
+            damage += 5;
         }
         if (player.block - damage < 0) {
             player.block = 0;
@@ -1639,12 +1645,6 @@ void updateBattle() {
     }
     if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<7))) && player.selector.screenRow < 158 - player.selector.height) {
         player.selector.screenRow += player.selector.dRow;
-    }
-
-    if ((!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
-        battleState = ENEMYTURN;
-        player.actionPoints = 3;
-        newHand();
     }
 
     if (player.health <= 0) {

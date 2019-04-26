@@ -102,6 +102,12 @@ void updateBattle() {
             checkSelector();
         }
 
+        if (BUTTON_PRESSED(BUTTON_B)) {
+            battleState = ENEMYTURN;
+            player.actionPoints = 3;
+            newHand();
+        }
+
         if (player.actionPoints == 0 || cardsRemaining == 0) {
             battleState = ENEMYTURN;
             player.actionPoints = 3;
@@ -112,7 +118,7 @@ void updateBattle() {
     if (battleState == ENEMYTURN) {
         int damage = 20;
         if (bossBattle == 1) {
-            damage += 10;
+            damage += 5;
         }
         if (player.block - damage < 0) {
             player.block = 0;
@@ -143,12 +149,6 @@ void updateBattle() {
     }
     if (BUTTON_HELD(BUTTON_DOWN) && player.selector.screenRow < 158 - player.selector.height) {
         player.selector.screenRow += player.selector.dRow;
-    }
-
-    if (BUTTON_PRESSED(BUTTON_B)) {
-        battleState = ENEMYTURN;
-        player.actionPoints = 3;
-        newHand();
     }
 
     if (player.health <= 0) {

@@ -4,7 +4,6 @@
 #include "battle.h"
 #include "map.h"
 #include "mapScreen.h"
-#include "spriteSheet.h"
 #include <math.h>
 
 int stateToGo;

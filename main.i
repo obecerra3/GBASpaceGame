@@ -296,7 +296,7 @@ extern const unsigned short pauseScreenPal[256];
 # 64 "main.c" 2
 # 1 "loseScreen.h" 1
 # 22 "loseScreen.h"
-extern const unsigned short loseScreenTiles[5376];
+extern const unsigned short loseScreenTiles[4688];
 
 
 extern const unsigned short loseScreenMap[1024];
@@ -306,7 +306,7 @@ extern const unsigned short loseScreenPal[256];
 # 65 "main.c" 2
 # 1 "winScreen.h" 1
 # 22 "winScreen.h"
-extern const unsigned short winScreenTiles[2144];
+extern const unsigned short winScreenTiles[2176];
 
 
 extern const unsigned short winScreenMap[1024];
@@ -329,6 +329,22 @@ extern const unsigned char punch[5069];
 # 20 "humanMusic.h"
 extern const unsigned char humanMusic[198504];
 # 69 "main.c" 2
+# 1 "mapMusic.h" 1
+# 20 "mapMusic.h"
+extern const unsigned char mapMusic[982528];
+# 70 "main.c" 2
+# 1 "shopMusic.h" 1
+# 20 "shopMusic.h"
+extern const unsigned char shopMusic[559616];
+# 71 "main.c" 2
+# 1 "battleMusic.h" 1
+# 20 "battleMusic.h"
+extern const unsigned char battleMusic[1599744];
+# 72 "main.c" 2
+# 1 "bruh.h" 1
+# 20 "bruh.h"
+extern const unsigned char bruh[13312];
+# 73 "main.c" 2
 
 
 
@@ -468,7 +484,7 @@ void goToMap() {
     hideSprites();
     clearAllOAM();
     initMapOAM();
-    playSoundA(punch, 5069, 11025, 0);
+    playSoundA(mapMusic, 982528, 11025, 1);
     DMANow(3, mapBackgroundPal, ((unsigned short *)0x5000000), 512 / 2);
     DMANow(3, mapBackgroundTiles, ((charblock *)0x6000000), 8608 / 2);
     DMANow(3, mapBackgroundMap, &((screenblock *)0x6000000)[28], 8192 / 2);
@@ -526,6 +542,7 @@ void map() {
 void goToBattle() {
     clearAllOAM();
     initBattle();
+    playSoundA(battleMusic, 1599744, 11025, 1);
     DMANow(3, battleScreenPal, ((unsigned short *)0x5000000), 512 / 2);
     DMANow(3, battleScreenTiles, ((charblock *)0x6000000), 4160 / 2);
     DMANow(3, battleScreenMap, &((screenblock *)0x6000000)[31], 2048 / 2);
@@ -542,6 +559,8 @@ void battle() {
         stateBeforePause = BATTLE;
         goToPause();
     } else if (gameOver) {
+        player.health = 80;
+        player.coins = rand() % 10;
         goToLose();
     } else if (gameWon && bossBattle) {
         bossBattle = 0;
@@ -557,6 +576,7 @@ void goToShop(int init) {
     clearAllOAM();
     hideSprites();
     initShop(init);
+    playSoundA(shopMusic, 559616, 11025, 1);
     DMANow(3, eventScreenPal, ((unsigned short *)0x5000000), 512 / 2);
     DMANow(3, eventScreenTiles, ((charblock *)0x6000000), 2368 / 2);
     DMANow(3, eventScreenMap, &((screenblock *)0x6000000)[31], 2048 / 2);
@@ -626,7 +646,7 @@ void goToWin() {
     clearAllOAM();
     hideSprites();
     DMANow(3, winScreenPal, ((unsigned short *)0x5000000), 512 / 2);
-    DMANow(3, winScreenTiles, ((charblock *)0x6000000), 4288 / 2);
+    DMANow(3, winScreenTiles, ((charblock *)0x6000000), 4352 / 2);
     DMANow(3, winScreenMap, &((screenblock *)0x6000000)[31], 2048 / 2);
     state = WIN;
 }
@@ -642,8 +662,9 @@ void win() {
 void goToLose() {
     clearAllOAM();
     hideSprites();
+    playSoundA(bruh, 13312, 11025, 0);
     DMANow(3, loseScreenPal, ((unsigned short *)0x5000000), 512 / 2);
-    DMANow(3, loseScreenTiles, ((charblock *)0x6000000), 10752 / 2);
+    DMANow(3, loseScreenTiles, ((charblock *)0x6000000), 9376 / 2);
     DMANow(3, loseScreenMap, &((screenblock *)0x6000000)[31], 2048 / 2);
     state = LOSE;
 }

@@ -66,6 +66,10 @@ Instructions
 #include "cards.h"
 #include "punch.h"
 #include "humanMusic.h"
+#include "mapMusic.h"
+#include "shopMusic.h"
+#include "battleMusic.h"
+#include "bruh.h"
 
 
 // Prototypes
@@ -205,7 +209,7 @@ void goToMap() {
     hideSprites();
     clearAllOAM();
     initMapOAM();
-    playSoundA(punch, PUNCHLEN, PUNCHFREQ, 0);
+    playSoundA(mapMusic, MAPMUSICLEN, MAPMUSICFREQ, 1);
     DMANow(3, mapBackgroundPal, PALETTE, mapBackgroundPalLen / 2);
     DMANow(3, mapBackgroundTiles, CHARBLOCK, mapBackgroundTilesLen / 2);
     DMANow(3, mapBackgroundMap, &SCREENBLOCK[28], mapBackgroundMapLen / 2);
@@ -263,6 +267,7 @@ void map() {
 void goToBattle() {
     clearAllOAM();
     initBattle();
+    playSoundA(battleMusic, BATTLEMUSICLEN, BATTLEMUSICFREQ, 1);
     DMANow(3, battleScreenPal, PALETTE, battleScreenPalLen / 2);
     DMANow(3, battleScreenTiles, CHARBLOCK, battleScreenTilesLen / 2);
     DMANow(3, battleScreenMap, &SCREENBLOCK[31], battleScreenMapLen / 2);
@@ -279,6 +284,8 @@ void battle() {
         stateBeforePause = BATTLE;
         goToPause();
     } else if (gameOver) {
+        player.health = 80;
+        player.coins = rand() % 10;
         goToLose();
     } else if (gameWon && bossBattle) {
         bossBattle = 0;
@@ -294,6 +301,7 @@ void goToShop(int init) {
     clearAllOAM();
     hideSprites();
     initShop(init);
+    playSoundA(shopMusic, SHOPMUSICLEN, SHOPMUSICFREQ, 1);
     DMANow(3, eventScreenPal, PALETTE, eventScreenPalLen / 2);
     DMANow(3, eventScreenTiles, CHARBLOCK, eventScreenTilesLen / 2);
     DMANow(3, eventScreenMap, &SCREENBLOCK[31], eventScreenMapLen / 2);
@@ -379,6 +387,7 @@ void win() {
 void goToLose() {
     clearAllOAM();
     hideSprites();
+    playSoundA(bruh, BRUHLEN, BRUHFREQ, 0);
     DMANow(3, loseScreenPal, PALETTE, loseScreenPalLen / 2);
     DMANow(3, loseScreenTiles, CHARBLOCK, loseScreenTilesLen / 2);
     DMANow(3, loseScreenMap, &SCREENBLOCK[31], loseScreenMapLen / 2);

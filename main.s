@@ -239,7 +239,7 @@ goToMap:
 	mov	lr, pc
 	bx	r3
 	ldr	r4, .L25+12
-	mov	r3, #0
+	mov	r3, #1
 	ldr	r2, .L25+16
 	ldr	r1, .L25+20
 	ldr	r0, .L25+24
@@ -280,8 +280,8 @@ goToMap:
 	.word	initMapOAM
 	.word	playSoundA
 	.word	11025
-	.word	5069
-	.word	punch
+	.word	982528
+	.word	mapMusic
 	.word	DMANow
 	.word	mapBackgroundPal
 	.word	4304
@@ -382,26 +382,33 @@ goToBattle:
 	mov	lr, pc
 	bx	r3
 	ldr	r4, .L59+8
+	mov	r3, #1
+	ldr	r2, .L59+12
+	ldr	r1, .L59+16
+	ldr	r0, .L59+20
+	mov	lr, pc
+	bx	r4
+	ldr	r4, .L59+24
 	mov	r3, #256
 	mov	r2, #83886080
-	ldr	r1, .L59+12
+	ldr	r1, .L59+28
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r3, #2080
 	mov	r2, #100663296
-	ldr	r1, .L59+16
+	ldr	r1, .L59+32
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r3, #1024
-	ldr	r2, .L59+20
-	ldr	r1, .L59+24
+	ldr	r2, .L59+36
+	ldr	r1, .L59+40
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r2, #3
-	ldr	r3, .L59+28
+	ldr	r3, .L59+44
 	pop	{r4, lr}
 	str	r2, [r3]
 	bx	lr
@@ -410,6 +417,10 @@ goToBattle:
 .L59:
 	.word	clearAllOAM
 	.word	initBattle
+	.word	playSoundA
+	.word	11025
+	.word	1599744
+	.word	battleMusic
 	.word	DMANow
 	.word	battleScreenPal
 	.word	battleScreenTiles
@@ -440,26 +451,33 @@ goToShop:
 	mov	lr, pc
 	bx	r3
 	ldr	r4, .L63+12
+	mov	r3, #1
+	ldr	r2, .L63+16
+	ldr	r1, .L63+20
+	ldr	r0, .L63+24
+	mov	lr, pc
+	bx	r4
+	ldr	r4, .L63+28
 	mov	r3, #256
 	mov	r2, #83886080
-	ldr	r1, .L63+16
+	ldr	r1, .L63+32
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r3, #1184
 	mov	r2, #100663296
-	ldr	r1, .L63+20
+	ldr	r1, .L63+36
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r3, #1024
-	ldr	r2, .L63+24
-	ldr	r1, .L63+28
+	ldr	r2, .L63+40
+	ldr	r1, .L63+44
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r2, #4
-	ldr	r3, .L63+32
+	ldr	r3, .L63+48
 	pop	{r4, lr}
 	str	r2, [r3]
 	bx	lr
@@ -469,6 +487,10 @@ goToShop:
 	.word	clearAllOAM
 	.word	hideSprites
 	.word	initShop
+	.word	playSoundA
+	.word	11025
+	.word	559616
+	.word	shopMusic
 	.word	DMANow
 	.word	eventScreenPal
 	.word	eventScreenTiles
@@ -839,7 +861,7 @@ goToWin:
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
-	mov	r3, #2144
+	mov	r3, #2176
 	mov	r2, #100663296
 	ldr	r1, .L127+16
 	mov	r0, #3
@@ -921,26 +943,33 @@ goToLose:
 	mov	lr, pc
 	bx	r3
 	ldr	r4, .L140+8
+	mov	r3, #0
+	ldr	r2, .L140+12
+	mov	r1, #13312
+	ldr	r0, .L140+16
+	mov	lr, pc
+	bx	r4
+	ldr	r4, .L140+20
 	mov	r3, #256
 	mov	r2, #83886080
-	ldr	r1, .L140+12
-	mov	r0, #3
-	mov	lr, pc
-	bx	r4
-	mov	r3, #5376
-	mov	r2, #100663296
-	ldr	r1, .L140+16
-	mov	r0, #3
-	mov	lr, pc
-	bx	r4
-	mov	r3, #1024
-	ldr	r2, .L140+20
 	ldr	r1, .L140+24
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
-	mov	r2, #9
 	ldr	r3, .L140+28
+	mov	r2, #100663296
+	ldr	r1, .L140+32
+	mov	r0, #3
+	mov	lr, pc
+	bx	r4
+	mov	r3, #1024
+	ldr	r2, .L140+36
+	ldr	r1, .L140+40
+	mov	r0, #3
+	mov	lr, pc
+	bx	r4
+	mov	r2, #9
+	ldr	r3, .L140+44
 	pop	{r4, lr}
 	str	r2, [r3]
 	bx	lr
@@ -949,8 +978,12 @@ goToLose:
 .L140:
 	.word	clearAllOAM
 	.word	hideSprites
+	.word	playSoundA
+	.word	11025
+	.word	bruh
 	.word	DMANow
 	.word	loseScreenPal
+	.word	4688
 	.word	loseScreenTiles
 	.word	100726784
 	.word	loseScreenMap
@@ -966,7 +999,7 @@ battle:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, r5, r6, lr}
+	push	{r4, r5, r6, r7, r8, lr}
 	ldr	r3, .L154
 	mov	lr, pc
 	bx	r3
@@ -1014,22 +1047,35 @@ battle:
 	str	r0, [r2, #4]
 	mov	lr, pc
 	bx	r3
-	pop	{r4, r5, r6, lr}
+	pop	{r4, r5, r6, r7, r8, lr}
 	b	goToMap
 .L142:
-	pop	{r4, r5, r6, lr}
+	pop	{r4, r5, r6, r7, r8, lr}
 	bx	lr
 .L152:
-	pop	{r4, r5, r6, lr}
+	mov	r2, #80
+	ldr	r4, .L154+40
+	ldr	r3, .L154+32
+	str	r2, [r4]
+	mov	lr, pc
+	bx	r3
+	ldr	r3, .L154+36
+	smull	r6, r7, r0, r3
+	asr	r3, r0, #31
+	rsb	r3, r3, r7, asr #2
+	add	r3, r3, r3, lsl #2
+	sub	r3, r0, r3, lsl #1
+	str	r3, [r4, #4]
+	pop	{r4, r5, r6, r7, r8, lr}
 	b	goToLose
 .L151:
 	mov	r2, #3
 	ldr	r3, .L154+48
-	pop	{r4, r5, r6, lr}
+	pop	{r4, r5, r6, r7, r8, lr}
 	str	r2, [r3]
 	b	goToPause
 .L153:
-	pop	{r4, r5, r6, lr}
+	pop	{r4, r5, r6, r7, r8, lr}
 	str	r3, [r2]
 	b	goToWin
 .L155:
