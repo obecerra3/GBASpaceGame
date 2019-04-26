@@ -110,7 +110,10 @@ void updateBattle() {
     }
 
     if (battleState == ENEMYTURN) {
-        int damage = 10;
+        int damage = 20;
+        if (bossBattle == 1) {
+            damage += 10;
+        }
         if (player.block - damage < 0) {
             player.block = 0;
             player.health += (player.block - damage);

@@ -1430,7 +1430,11 @@ void initShop(int newStock) {
     player.selector.oamIndex = getOAMIndex();
     for (int i = 0; i < 3; i++) {
         if (newStock == 1) {
-            cardsForSale[i] = rand() % 10;
+            int index = rand() % 10;
+            if (index >= 4 && index <= 7) {
+                index = rand() % 4;
+            }
+            cardsForSale[i] = index;
             cardsBought[i] = 0;
         }
         deckOAM[i] = getOAMIndex();

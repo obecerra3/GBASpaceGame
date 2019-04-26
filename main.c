@@ -228,7 +228,6 @@ void map() {
     }
 
     if (BUTTON_PRESSED(BUTTON_SELECT)) {
-        printNum(20, 20, 999, 2);
         if (cheatOn == 1) {
             cheatOn = 0;
         } else {

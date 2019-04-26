@@ -114,31 +114,31 @@ initShop:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	mov	r2, #0
 	push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
-	mov	r9, r2
-	ldr	r1, .L18
+	mov	r10, r2
+	ldr	r1, .L20
 	sub	sp, sp, #44
-	ldr	r4, .L18+4
+	ldr	r4, .L20+4
 	str	r2, [r1]
 	mov	r7, r0
 	mov	lr, pc
 	bx	r4
-	mov	fp, r9
-	ldr	r2, .L18+8
-	ldr	r8, .L18+12
+	mov	fp, r10
+	ldr	r2, .L20+8
+	ldr	r8, .L20+12
 	str	r0, [r2, #68]
-	ldr	r6, .L18+16
-	ldr	r10, .L18+20
-.L12:
+	ldr	r6, .L20+16
+	ldr	r9, .L20+20
+.L13:
 	cmp	r7, #1
-	beq	.L15
-.L17:
+	beq	.L16
+.L18:
 	mov	lr, pc
 	bx	r4
-	lsl	r5, r9, #2
-	add	r9, r9, #1
-	cmp	r9, #3
+	lsl	r5, r10, #2
+	add	r10, r10, #1
+	cmp	r10, #3
 	str	r0, [r6, r5]
-	bne	.L12
+	bne	.L13
 	mov	r3, #0
 	str	r3, [sp, #20]
 	str	r3, [sp, #24]
@@ -158,7 +158,7 @@ initShop:
 	str	r3, [sp, #8]
 	add	lr, sp, #4
 	ldmia	lr!, {r0, r1, r2, r3}
-	ldr	ip, .L18+24
+	ldr	ip, .L20+24
 	stmia	ip!, {r0, r1, r2, r3}
 	ldmia	lr!, {r0, r1, r2, r3}
 	stmia	ip!, {r0, r1, r2, r3}
@@ -168,22 +168,35 @@ initShop:
 	@ sp needed
 	pop	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
 	b	drawShopCards
-.L15:
+.L16:
 	mov	lr, pc
-	bx	r10
-	ldr	r1, .L18+28
+	bx	r9
+	ldr	r1, .L20+28
 	smull	r2, r3, r0, r1
 	asr	r1, r0, #31
 	rsb	r2, r1, r3, asr #2
 	add	r2, r2, r2, lsl #2
-	ldr	r3, .L18+32
 	sub	r2, r0, r2, lsl #1
-	str	fp, [r3, r9, lsl #2]
-	str	r2, [r8, r9, lsl #2]
-	b	.L17
+	sub	r1, r2, #4
+	cmp	r1, #3
+	ldrhi	r3, .L20+32
+	strhi	r2, [r8, r10, lsl #2]
+	strhi	fp, [r3, r10, lsl #2]
+	bhi	.L18
 .L19:
+	mov	lr, pc
+	bx	r9
+	rsbs	r1, r0, #0
+	and	r1, r1, #3
+	ldr	r3, .L20+32
+	and	r2, r0, #3
+	rsbpl	r2, r1, #0
+	str	r2, [r8, r10, lsl #2]
+	str	fp, [r3, r10, lsl #2]
+	b	.L18
+.L21:
 	.align	2
-.L18:
+.L20:
 	.word	leaveShop
 	.word	getOAMIndex
 	.word	player
@@ -204,14 +217,14 @@ drawShop:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	ldr	r1, .L22
+	ldr	r1, .L24
 	push	{r4, r5, lr}
 	ldr	r3, [r1, #68]
-	ldr	lr, .L22+4
+	ldr	lr, .L24+4
 	ldr	r0, [r1, #48]
-	ldr	r4, .L22+8
+	ldr	r4, .L24+8
 	ldrb	r5, [r1, #44]	@ zero_extendqisi2
-	ldr	ip, .L22+12
+	ldr	ip, .L24+12
 	ldr	r2, [lr, #12]
 	lsl	r3, r3, #3
 	and	r0, r0, r4
@@ -237,9 +250,9 @@ drawShop:
 	strh	r3, [r1, #4]	@ movhi
 	pop	{r4, r5, lr}
 	bx	lr
-.L23:
+.L25:
 	.align	2
-.L22:
+.L24:
 	.word	player
 	.word	exitButton
 	.word	511
@@ -257,14 +270,14 @@ checkShopSelector:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
 	mov	r5, #0
-	ldr	r8, .L37
-	ldr	r4, .L37+4
-	ldr	r7, .L37+8
-	ldr	r6, .L37+12
-	ldr	r9, .L37+16
+	ldr	r8, .L39
+	ldr	r4, .L39+4
+	ldr	r7, .L39+8
+	ldr	r6, .L39+12
+	ldr	r9, .L39+16
 	sub	sp, sp, #20
 	add	r10, r8, #12
-.L26:
+.L28:
 	mov	r1, #39
 	mov	r0, #51
 	mov	ip, #74
@@ -282,23 +295,23 @@ checkShopSelector:
 	bx	r6
 	cmp	r0, #0
 	lsl	fp, r5, #2
-	beq	.L25
+	beq	.L27
 	ldr	r3, [r8, r5, lsl #2]
 	add	r3, r3, r3, lsl #1
 	add	r3, r9, r3, lsl #4
 	ldr	r2, [r3, #44]
 	ldr	r3, [r4, #4]
 	cmp	r2, r3
-	bgt	.L25
+	bgt	.L27
 	ldr	r1, [r4, #16]
 	cmp	r1, #39
-	ble	.L36
-.L25:
+	ble	.L38
+.L27:
 	add	r5, r5, #1
 	cmp	r5, #3
-	bne	.L26
+	bne	.L28
 	mov	ip, #15
-	ldr	r3, .L37+20
+	ldr	r3, .L39+20
 	add	r1, r3, #8
 	ldm	r1, {r1, r2}
 	str	r2, [sp, #4]
@@ -313,13 +326,13 @@ checkShopSelector:
 	bx	r6
 	cmp	r0, #0
 	movne	r2, #1
-	ldrne	r3, .L37+24
+	ldrne	r3, .L39+24
 	strne	r2, [r3]
 	add	sp, sp, #20
 	@ sp needed
 	pop	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
 	bx	lr
-.L36:
+.L38:
 	mov	r1, #1
 	sub	r3, r3, r2
 	str	r1, [fp, r10]
@@ -335,10 +348,10 @@ checkShopSelector:
 	ldr	r3, [r4, #16]
 	add	r3, r3, #1
 	str	r3, [r4, #16]
-	b	.L25
-.L38:
+	b	.L27
+.L40:
 	.align	2
-.L37:
+.L39:
 	.word	.LANCHOR1
 	.word	player
 	.word	.LANCHOR0
@@ -358,11 +371,11 @@ updateShop:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	ldr	r3, .L48
+	ldr	r3, .L50
 	ldrh	r3, [r3, #48]
 	tst	r3, #16
-	bne	.L40
-	ldr	r3, .L48+4
+	bne	.L42
+	ldr	r3, .L50+4
 	ldr	r2, [r3, #36]
 	ldr	r1, [r3, #48]
 	rsb	r2, r2, #238
@@ -370,34 +383,34 @@ updateShop:
 	ldrlt	r2, [r3, #56]
 	addlt	r1, r2, r1
 	strlt	r1, [r3, #48]
-.L40:
-	ldr	r3, .L48
+.L42:
+	ldr	r3, .L50
 	ldrh	r3, [r3, #48]
 	tst	r3, #32
-	bne	.L41
-	ldr	r2, .L48+4
+	bne	.L43
+	ldr	r2, .L50+4
 	ldr	r3, [r2, #48]
 	cmp	r3, #2
 	ldrgt	r1, [r2, #56]
 	subgt	r3, r3, r1
 	strgt	r3, [r2, #48]
-.L41:
-	ldr	r3, .L48
+.L43:
+	ldr	r3, .L50
 	ldrh	r3, [r3, #48]
 	tst	r3, #64
-	bne	.L42
-	ldr	r2, .L48+4
+	bne	.L44
+	ldr	r2, .L50+4
 	ldr	r3, [r2, #44]
 	cmp	r3, #2
 	ldrgt	r1, [r2, #52]
 	subgt	r3, r3, r1
 	strgt	r3, [r2, #44]
-.L42:
-	ldr	r3, .L48
+.L44:
+	ldr	r3, .L50
 	ldrh	r3, [r3, #48]
 	tst	r3, #128
-	bne	.L43
-	ldr	r3, .L48+4
+	bne	.L45
+	ldr	r3, .L50+4
 	ldr	r2, [r3, #40]
 	ldr	r1, [r3, #44]
 	rsb	r2, r2, #158
@@ -405,19 +418,19 @@ updateShop:
 	ldrlt	r2, [r3, #52]
 	addlt	r1, r2, r1
 	strlt	r1, [r3, #44]
-.L43:
-	ldr	r3, .L48+8
+.L45:
+	ldr	r3, .L50+8
 	ldrh	r3, [r3]
 	tst	r3, #1
 	bxeq	lr
-	ldr	r3, .L48+12
+	ldr	r3, .L50+12
 	ldrh	r3, [r3]
 	tst	r3, #1
 	bxne	lr
 	b	checkShopSelector
-.L49:
+.L51:
 	.align	2
-.L48:
+.L50:
 	.word	67109120
 	.word	player
 	.word	oldButtons

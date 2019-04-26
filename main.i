@@ -236,7 +236,7 @@ void stopSound();
 
 # 1 "titleScreen.h" 1
 # 22 "titleScreen.h"
-extern const unsigned short titleScreenTiles[4304];
+extern const unsigned short titleScreenTiles[7040];
 
 
 extern const unsigned short titleScreenMap[1024];
@@ -246,7 +246,7 @@ extern const unsigned short titleScreenPal[256];
 # 59 "main.c" 2
 # 1 "instructionScreen.h" 1
 # 22 "instructionScreen.h"
-extern const unsigned short instructionScreenTiles[32];
+extern const unsigned short instructionScreenTiles[7504];
 
 
 extern const unsigned short instructionScreenMap[1024];
@@ -296,7 +296,7 @@ extern const unsigned short pauseScreenPal[256];
 # 64 "main.c" 2
 # 1 "loseScreen.h" 1
 # 22 "loseScreen.h"
-extern const unsigned short loseScreenTiles[176];
+extern const unsigned short loseScreenTiles[5376];
 
 
 extern const unsigned short loseScreenMap[1024];
@@ -306,7 +306,7 @@ extern const unsigned short loseScreenPal[256];
 # 65 "main.c" 2
 # 1 "winScreen.h" 1
 # 22 "winScreen.h"
-extern const unsigned short winScreenTiles[144];
+extern const unsigned short winScreenTiles[2144];
 
 
 extern const unsigned short winScreenMap[1024];
@@ -430,7 +430,7 @@ void goToStart() {
     hideSprites();
     clearAllOAM();
     DMANow(3, titleScreenPal, ((unsigned short *)0x5000000), 512 / 2);
-    DMANow(3, titleScreenTiles, ((charblock *)0x6000000), 8608 / 2);
+    DMANow(3, titleScreenTiles, ((charblock *)0x6000000), 14080 / 2);
     DMANow(3, titleScreenMap, &((screenblock *)0x6000000)[31], 2048 / 2);
     state = START;
 }
@@ -448,7 +448,7 @@ void goToInstructions() {
     clearAllOAM();
     playSoundA(punch, 5069, 11025, 0);
     DMANow(3, instructionScreenPal, ((unsigned short *)0x5000000), 512 / 2);
-    DMANow(3, instructionScreenTiles, ((charblock *)0x6000000), 64 / 2);
+    DMANow(3, instructionScreenTiles, ((charblock *)0x6000000), 15008 / 2);
     DMANow(3, instructionScreenMap, &((screenblock *)0x6000000)[31], 2048 / 2);
     state = INSTRUCTIONS;
 }
@@ -491,7 +491,6 @@ void map() {
     }
 
     if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
-        printNum(20, 20, 999, 2);
         if (cheatOn == 1) {
             cheatOn = 0;
         } else {
@@ -627,7 +626,7 @@ void goToWin() {
     clearAllOAM();
     hideSprites();
     DMANow(3, winScreenPal, ((unsigned short *)0x5000000), 512 / 2);
-    DMANow(3, winScreenTiles, ((charblock *)0x6000000), 288 / 2);
+    DMANow(3, winScreenTiles, ((charblock *)0x6000000), 4288 / 2);
     DMANow(3, winScreenMap, &((screenblock *)0x6000000)[31], 2048 / 2);
     state = WIN;
 }
@@ -644,7 +643,7 @@ void goToLose() {
     clearAllOAM();
     hideSprites();
     DMANow(3, loseScreenPal, ((unsigned short *)0x5000000), 512 / 2);
-    DMANow(3, loseScreenTiles, ((charblock *)0x6000000), 352 / 2);
+    DMANow(3, loseScreenTiles, ((charblock *)0x6000000), 10752 / 2);
     DMANow(3, loseScreenMap, &((screenblock *)0x6000000)[31], 2048 / 2);
     state = LOSE;
 }
