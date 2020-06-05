@@ -1,5 +1,5 @@
 # SpaceGame
-Game written in C
+GBA Game written in C for Media Architecture CS class at Georgia Tech
 
 # Play
 
