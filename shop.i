@@ -1380,13 +1380,6 @@ extern const unsigned short eventScreenMap[1024];
 
 extern const unsigned short eventScreenPal[256];
 # 6 "shop.c" 2
-# 1 "spriteSheet.h" 1
-# 21 "spriteSheet.h"
-extern const unsigned short spritesheetTiles[16384];
-
-
-extern const unsigned short spritesheetPal[256];
-# 7 "shop.c" 2
 # 1 "battle.h" 1
 
 void initBattle();
@@ -1408,7 +1401,7 @@ extern int gameOver;
 extern int gameWon;
 extern int bossBattle;
 extern int cheatOn;
-# 8 "shop.c" 2
+# 7 "shop.c" 2
 
 static int cardsForSale[3];
 int deckOAM[3];

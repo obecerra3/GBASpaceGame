@@ -391,7 +391,6 @@ int main() {
     setupSounds();
     setupInterrupts();
 
-    playSoundA(humanMusic, 198504, 11025, 1);
  while(1) {
         oldButtons = buttons;
         buttons = (*(volatile unsigned short *)0x04000130);
@@ -444,6 +443,7 @@ void initialize() {
 
 void goToStart() {
     hideSprites();
+    playSoundA(humanMusic, 198504, 11025, 1);
     clearAllOAM();
     DMANow(3, titleScreenPal, ((unsigned short *)0x5000000), 512 / 2);
     DMANow(3, titleScreenTiles, ((charblock *)0x6000000), 14080 / 2);

@@ -116,7 +116,6 @@ int main() {
     setupSounds();
     setupInterrupts();
 
-    playSoundA(humanMusic, HUMANMUSICLEN, HUMANMUSICFREQ, 1);
 	while(1) {
         oldButtons = buttons;
         buttons = BUTTONS;
@@ -169,6 +168,7 @@ void initialize() {
 // Sets up the start state
 void goToStart() {
     hideSprites();
+    playSoundA(humanMusic, HUMANMUSICLEN, HUMANMUSICFREQ, 1);
     clearAllOAM();
     DMANow(3, titleScreenPal, PALETTE, titleScreenPalLen / 2);
     DMANow(3, titleScreenTiles, CHARBLOCK, titleScreenTilesLen / 2);

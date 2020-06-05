@@ -3,7 +3,6 @@
 #include "myLib.h"
 #include "shop.h"
 #include "eventScreen.h"
-#include "spriteSheet.h"
 #include "battle.h"
 
 static int cardsForSale[3];

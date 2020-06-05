@@ -24,30 +24,37 @@ goToStart:
 	ldr	r3, .L4
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L4+4
+	ldr	r4, .L4+4
+	ldr	r2, .L4+8
+	ldr	r1, .L4+12
+	ldr	r0, .L4+16
+	mov	r3, #1
+	mov	lr, pc
+	bx	r4
+	ldr	r3, .L4+20
 	mov	lr, pc
 	bx	r3
-	ldr	r4, .L4+8
+	ldr	r4, .L4+24
 	mov	r3, #256
 	mov	r2, #83886080
-	ldr	r1, .L4+12
+	ldr	r1, .L4+28
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r3, #7040
 	mov	r2, #100663296
-	ldr	r1, .L4+16
+	ldr	r1, .L4+32
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r3, #1024
-	ldr	r2, .L4+20
-	ldr	r1, .L4+24
+	ldr	r2, .L4+36
+	ldr	r1, .L4+40
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r2, #0
-	ldr	r3, .L4+28
+	ldr	r3, .L4+44
 	pop	{r4, lr}
 	str	r2, [r3]
 	bx	lr
@@ -55,6 +62,10 @@ goToStart:
 	.align	2
 .L4:
 	.word	hideSprites
+	.word	playSoundA
+	.word	11025
+	.word	198504
+	.word	humanMusic
 	.word	clearAllOAM
 	.word	DMANow
 	.word	titleScreenPal
@@ -1120,21 +1131,14 @@ main:
 	ldr	r3, .L168+12
 	mov	lr, pc
 	bx	r3
-	ldr	r4, .L168+16
-	mov	r3, #1
-	ldr	r2, .L168+20
-	ldr	r1, .L168+24
-	ldr	r0, .L168+28
-	mov	lr, pc
-	bx	r4
-	ldr	r7, .L168+32
-	ldr	r4, .L168+36
-	ldr	r6, .L168+40
-	ldr	fp, .L168+44
-	ldr	r10, .L168+48
-	ldr	r9, .L168+52
-	ldr	r5, .L168+56
-	ldr	r8, .L168+60
+	ldr	r7, .L168+16
+	ldr	r4, .L168+20
+	ldr	r6, .L168+24
+	ldr	fp, .L168+28
+	ldr	r10, .L168+32
+	ldr	r9, .L168+36
+	ldr	r5, .L168+40
+	ldr	r8, .L168+44
 .L166:
 	ldrh	r3, [r4]
 	strh	r3, [r7]	@ movhi
@@ -1169,32 +1173,32 @@ main:
 	bx	r9
 	b	.L166
 .L164:
-	ldr	r3, .L168+64
+	ldr	r3, .L168+48
 	mov	lr, pc
 	bx	r3
 	b	.L157
 .L163:
-	ldr	r3, .L168+68
+	ldr	r3, .L168+52
 	mov	lr, pc
 	bx	r3
 	b	.L157
 .L162:
-	ldr	r3, .L168+72
+	ldr	r3, .L168+56
 	mov	lr, pc
 	bx	r3
 	b	.L157
 .L161:
-	ldr	r3, .L168+76
+	ldr	r3, .L168+60
 	mov	lr, pc
 	bx	r3
 	b	.L157
 .L158:
-	ldr	r3, .L168+80
+	ldr	r3, .L168+64
 	mov	lr, pc
 	bx	r3
 	b	.L157
 .L160:
-	ldr	r3, .L168+84
+	ldr	r3, .L168+68
 	mov	lr, pc
 	bx	r3
 	b	.L157
@@ -1205,10 +1209,6 @@ main:
 	.word	initGame
 	.word	setupSounds
 	.word	setupInterrupts
-	.word	playSoundA
-	.word	11025
-	.word	198504
-	.word	humanMusic
 	.word	oldButtons
 	.word	buttons
 	.word	state
