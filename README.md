@@ -3,7 +3,7 @@ GBA Game written in C for Media Architecture CS class at Georgia Tech
 
 # Play
 
-Run .gba file in a GBA emulator. 
+Run SpaceGame.gba in a GBA emulator. 
 
 ![Alt_Text](https://media.giphy.com/media/ZciAKXqRnvqFx4UxM0/giphy.gif)
 
